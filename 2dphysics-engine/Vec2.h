@@ -1,5 +1,4 @@
-#ifndef VEC2_H
-#define VEC2_H
+#pragma once
 
 struct Vec2 {
     float x;
@@ -40,5 +39,3 @@ struct Vec2 {
     Vec2& operator *= (const float n);       // v1 *= n
     Vec2& operator /= (const float n);       // v1 /= n
 };
-
-#endif
