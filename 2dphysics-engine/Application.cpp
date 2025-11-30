@@ -45,7 +45,7 @@ void Application::Update() {
     timePreviousFrame = SDL_GetTicks();
 
     // update logic
-    m_particle->velocity = Vec2(100.0 * deltatime, 30.0 * deltatime);
+    m_particle->velocity = Vec2(30.0 * deltatime, 10.0 * deltatime);
     m_particle->position += m_particle->velocity;
 }
 
