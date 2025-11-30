@@ -27,7 +27,8 @@ void Application::Input() {
 }
 
 void Application::Update() {
-    // TODO: update all objects in the scene
+    m_particle->velocity = Vec2(2.0, 0.0);
+    m_particle->position.Add(m_particle->velocity);
 }
 
 
