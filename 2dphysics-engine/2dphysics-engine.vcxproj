@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Vec2.h" />

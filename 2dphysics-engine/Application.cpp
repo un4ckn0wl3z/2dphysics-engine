@@ -35,10 +35,14 @@ void Application::Update() {
     if (timeToWait > 0) {
         SDL_Delay(timeToWait);
     }
+
+    // calculate deltatime
+    float deltatime = (SDL_GetTicks() - timePreviousFrame) / 1000.0f;
+
     timePreviousFrame = SDL_GetTicks();
 
     // update logic
-    m_particle->velocity = Vec2(2.0, 0.0);
+    m_particle->velocity = Vec2(100.0 * deltatime, 30.0 * deltatime);
     m_particle->position += m_particle->velocity;
 }
 
