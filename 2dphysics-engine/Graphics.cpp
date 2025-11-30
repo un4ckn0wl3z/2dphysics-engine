@@ -21,9 +21,12 @@ bool Graphics::OpenWindow() {
     }
     SDL_DisplayMode display_mode;
     SDL_GetCurrentDisplayMode(0, &display_mode);
-    windowWidth = display_mode.w;
-    windowHeight = display_mode.h;
-    window = SDL_CreateWindow(NULL, 0, 0, windowWidth, windowHeight, SDL_WINDOW_BORDERLESS);
+    //windowWidth = display_mode.w;
+    //windowHeight = display_mode.h;
+
+    windowWidth = 1280;// displayMode.w; 800
+    windowHeight = 720;// displayMode.h; 600
+    window = SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_BORDERLESS);
     if (!window) {
         std::cerr << "Error creating SDL window" << std::endl;
         return false;
@@ -33,6 +36,9 @@ bool Graphics::OpenWindow() {
         std::cerr << "Error creating SDL renderer" << std::endl;
         return false;
     }
+
+    // SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+
     return true;
 }
 
