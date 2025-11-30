@@ -38,6 +38,9 @@ void Application::Update() {
 
     // calculate deltatime
     float deltatime = (SDL_GetTicks() - timePreviousFrame) / 1000.0f;
+    if (deltatime > 0.016) {
+        deltatime = 0.016;
+    }
 
     timePreviousFrame = SDL_GetTicks();
 
