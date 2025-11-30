@@ -4,7 +4,7 @@
 
 class Application {
     private:
-        bool running = false;
+        bool m_running = false;
 
     public:
         Application() = default;

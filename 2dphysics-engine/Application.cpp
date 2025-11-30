@@ -1,14 +1,14 @@
 #include "Application.h"
 
 bool Application::IsRunning() {
-    return running;
+    return m_running;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Setup function (executed once in the beginning of the simulation)
 ///////////////////////////////////////////////////////////////////////////////
 void Application::Setup() {
-    running = Graphics::OpenWindow();
+    m_running = Graphics::OpenWindow();
 
     // TODO: setup objects in the scene
 }
@@ -21,11 +21,11 @@ void Application::Input() {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-                running = false;
+                m_running = false;
                 break;
             case SDL_KEYDOWN:
                 if (event.key.keysym.sym == SDLK_ESCAPE)
-                    running = false;
+                    m_running = false;
                 break;
         }
     }
