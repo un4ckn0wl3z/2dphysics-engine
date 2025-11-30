@@ -1,5 +1,19 @@
-int main(int argc, char* argv[]) {
-	return 0;
+#include "Application.h"
+
+int main(int argc, char* args[]) {
+    Application app;
+
+    app.Setup();
+
+    while (app.IsRunning()) {
+        app.Input();
+        app.Update();
+        app.Render();
+    }
+
+    app.Destroy();
+
+    return 0;
 }
 
-// cont-> 36.
+// cont-> 37.

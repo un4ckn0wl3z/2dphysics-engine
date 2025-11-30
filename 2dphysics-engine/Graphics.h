@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SDL.h>
-#include "../lib//SDL2_gfx/SDL2_gfxPrimitives.h"
-#include "Physics/Vec2.h"
+#include "SDL2_gfxPrimitives.h"
+#include "Vec2.h"
 #include <vector>
 
 struct Graphics {
