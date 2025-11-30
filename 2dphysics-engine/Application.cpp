@@ -28,7 +28,7 @@ void Application::Input() {
 
 void Application::Update() {
     m_particle->velocity = Vec2(2.0, 0.0);
-    m_particle->position + m_particle->velocity;
+    m_particle->position += m_particle->velocity;
 }
 
 
