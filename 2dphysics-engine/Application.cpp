@@ -40,15 +40,18 @@ void Application::Update() {
     float deltatime = (SDL_GetTicks() - timePreviousFrame) / 1000.0f;
 
     // deltatime protection
-    if (deltatime > 0.016) {
-        deltatime = 0.016;
-    }
+    //if (deltatime > 0.016) {
+    //    deltatime = 0.016;
+    //}
 
     timePreviousFrame = SDL_GetTicks();
 
     // update logic
-    m_particle->velocity = Vec2(100.0 * deltatime, 10.0 * deltatime);
-    m_particle->position += m_particle->velocity;
+    m_particle->acceleration = Vec2(0.0, 9.8);
+
+    // apply acceleration and velocity
+    m_particle->velocity += m_particle->acceleration * deltatime;
+    m_particle->position += m_particle->velocity * deltatime;
 }
 
 
