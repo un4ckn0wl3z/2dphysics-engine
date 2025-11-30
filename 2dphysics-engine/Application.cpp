@@ -57,20 +57,20 @@ void Application::Update() {
     // limit boundaries
     if (m_particle->position.x - m_particle->radius <= 0) {
         m_particle->position.x = m_particle->radius;
-        m_particle->velocity.x *= -1.0;
+        m_particle->velocity.x *= -0.9;
     }
     else if (m_particle->position.x + m_particle->radius >= Graphics::Width()) {
         m_particle->position.x = Graphics::Width() - m_particle->radius;
-        m_particle->velocity.x *= -1.0;
+        m_particle->velocity.x *= -0.9;
     }
 
     if (m_particle->position.y - m_particle->radius <= 0) {
         m_particle->position.y = m_particle->radius;
-        m_particle->velocity.y *= -1.0;
+        m_particle->velocity.y *= -0.9;
     }
     else if (m_particle->position.y + m_particle->radius >= Graphics::Height()) {
         m_particle->position.y = Graphics::Height() - m_particle->radius;
-        m_particle->velocity.y *= -1.0;
+        m_particle->velocity.y *= -0.9;
     }
 
 
