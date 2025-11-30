@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Constants.h"
 
 bool Application::IsRunning() {
     return m_running;
@@ -27,6 +28,16 @@ void Application::Input() {
 }
 
 void Application::Update() {
+
+    // frame-rate lock
+    static int timePreviousFrame;
+    int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - timePreviousFrame);
+    if (timeToWait > 0) {
+        SDL_Delay(timeToWait);
+    }
+    timePreviousFrame = SDL_GetTicks();
+
+    // update logic
     m_particle->velocity = Vec2(2.0, 0.0);
     m_particle->position += m_particle->velocity;
 }
