@@ -38,7 +38,7 @@ void Application::Update() {
     }
 
     // calculate deltatime
-    float deltatime = (SDL_GetTicks() - timePreviousFrame) / 1000.0f;
+    float deltaTime = (SDL_GetTicks() - timePreviousFrame) / 1000.0f;
 
     // deltatime protection for debug purpose
     //if (deltatime > 0.016) {
@@ -51,8 +51,7 @@ void Application::Update() {
     m_particle->acceleration = Vec2(2.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
 
     // apply acceleration and velocity
-    m_particle->velocity += m_particle->acceleration * deltatime;
-    m_particle->position += m_particle->velocity * deltatime;
+    m_particle->Integrate(deltaTime);
 
     // limit boundaries
     if (m_particle->position.x - m_particle->radius <= 0) {
