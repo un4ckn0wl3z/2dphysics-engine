@@ -12,7 +12,7 @@ void Application::Setup() {
     smallBall->radius = 4;
     m_particles.push_back(smallBall);
 
-    Particle* bigBall = new Particle(50, 200, 3.0);
+    Particle* bigBall = new Particle(50, 100, 3.0);
     bigBall->radius = 12;
     m_particles.push_back(bigBall);
 }
