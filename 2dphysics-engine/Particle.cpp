@@ -34,7 +34,7 @@ void Particle::ClearForces()
 void Particle::Integrate(float dt)
 {
 	// find the acceleration based on the forces and the mass
-	this->acceleration = this->sumForces / this->mass;
+	this->acceleration = this->sumForces * this->invMass;
 
 	this->velocity += this->acceleration * dt;
 	this->position += this->velocity * dt;
