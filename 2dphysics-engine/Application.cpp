@@ -62,7 +62,7 @@ void Application::Update() {
     }
     // apply weight
     for (auto particle : m_particles) {
-        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
+        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
         particle->AddForce(weight);
     }
 
