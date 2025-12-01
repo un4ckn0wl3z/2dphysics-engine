@@ -24,8 +24,8 @@ bool Graphics::OpenWindow() {
     //windowWidth = display_mode.w;
     //windowHeight = display_mode.h;
 
-    windowWidth = 1280;// displayMode.w; 800
-    windowHeight = 720;// displayMode.h; 600
+    windowWidth = 800;// displayMode.w; 800 1280
+    windowHeight = 600;// displayMode.h; 600 720
     window = SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_BORDERLESS);
     if (!window) {
         std::cerr << "Error creating SDL window" << std::endl;
