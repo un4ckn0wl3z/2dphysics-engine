@@ -60,6 +60,11 @@ void Application::Update() {
         Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
         particle->AddForce(wind);
     }
+    // apply weight
+    for (auto particle : m_particles) {
+        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
+        particle->AddForce(weight);
+    }
 
     for (auto particle : m_particles) {
         // apply acceleration and velocity
