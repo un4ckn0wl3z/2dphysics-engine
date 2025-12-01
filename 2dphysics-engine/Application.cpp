@@ -48,7 +48,12 @@ void Application::Update() {
     timePreviousFrame = SDL_GetTicks();
 
     // update logic
-    m_particle->acceleration = Vec2(2.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
+    //m_particle->acceleration = Vec2(2.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
+
+    // apply some force to particle
+    Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
+    m_particle->AddForce(wind);
+
 
     // apply acceleration and velocity
     m_particle->Integrate(deltaTime);
