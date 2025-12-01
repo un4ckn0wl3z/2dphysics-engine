@@ -2,11 +2,12 @@
 
 #include "./Graphics.h"
 #include "Particle.h"
+#include <vector>
 
 class Application {
     private:
         bool m_running = false;
-        Particle* m_particle;
+        std::vector<Particle*> m_particles;
 
     public:
         Application() = default;
