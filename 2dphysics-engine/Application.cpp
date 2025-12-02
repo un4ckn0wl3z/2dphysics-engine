@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Constants.h"
+#include "Force.h"
 
 bool Application::IsRunning() {
     return m_running;
@@ -83,22 +84,28 @@ void Application::Update() {
     for (auto particle : m_particles) {
         Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
         particle->AddForce(wind);
-    }
-    // apply weight
-    for (auto particle : m_particles) {
+
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
         particle->AddForce(weight);
-    }
 
-    // apply push force
-    for (auto particle : m_particles) {
         particle->AddForce(m_pushForce);
+
+        // if we are inside liquid, apply drag force
+        if (particle->position.y >= m_liquid.y) {
+            Vec2 drag = Force::GenerateDragForce(*particle, 0.01);
+            particle->AddForce(drag);
+
+        }
+
     }
+    
 
     for (auto particle : m_particles) {
         // apply acceleration and velocity
         particle->Integrate(deltaTime);
+    }
 
+    for (auto particle : m_particles) {
         // limit boundaries
         if (particle->position.x - particle->radius <= 0) {
             particle->position.x = particle->radius;
