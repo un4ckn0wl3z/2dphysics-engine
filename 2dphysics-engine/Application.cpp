@@ -12,9 +12,9 @@ void Application::Setup() {
     smallBall->radius = 4;
     m_particles.push_back(smallBall);
 
-    Particle* bigBall = new Particle(50, 100, 3.0);
-    bigBall->radius = 12;
-    m_particles.push_back(bigBall);
+    //Particle* bigBall = new Particle(50, 100, 3.0);
+    //bigBall->radius = 12;
+    //m_particles.push_back(bigBall);
 }
 
 
@@ -28,6 +28,24 @@ void Application::Input() {
             case SDL_KEYDOWN:
                 if (event.key.keysym.sym == SDLK_ESCAPE)
                     m_running = false;
+                if (event.key.keysym.sym == SDLK_w)
+                    m_pushForce.y = -50 * PIXELS_PER_METER;
+                if (event.key.keysym.sym == SDLK_d)
+                    m_pushForce.x = 50 * PIXELS_PER_METER;
+                if (event.key.keysym.sym == SDLK_s)
+                    m_pushForce.y = 50 * PIXELS_PER_METER;
+                if (event.key.keysym.sym == SDLK_a)
+                    m_pushForce.x = -50 * PIXELS_PER_METER;
+                break;
+            case SDL_KEYUP:
+                if (event.key.keysym.sym == SDLK_w)
+                    m_pushForce.y = 0;
+                if (event.key.keysym.sym == SDLK_d)
+                    m_pushForce.x = 0;
+                if (event.key.keysym.sym == SDLK_s)
+                    m_pushForce.y = 0;
+                if (event.key.keysym.sym == SDLK_a)
+                    m_pushForce.x = 0;
                 break;
         }
     }
@@ -64,6 +82,11 @@ void Application::Update() {
     for (auto particle : m_particles) {
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
         particle->AddForce(weight);
+    }
+
+    // apply push force
+    for (auto particle : m_particles) {
+        particle->AddForce(m_pushForce);
     }
 
     for (auto particle : m_particles) {
