@@ -13,9 +13,9 @@ void Application::Setup() {
     smallBall->radius = 4;
     m_particles.push_back(smallBall);
 
-    //Particle* bigBall = new Particle(50, 100, 3.0);
-    //bigBall->radius = 12;
-    //m_particles.push_back(bigBall);
+    Particle* bigBall = new Particle(50, 100, 3.0);
+    bigBall->radius = 12;
+    m_particles.push_back(bigBall);
 
     m_liquid.x = 0;
     m_liquid.y = Graphics::Height() / 2;
