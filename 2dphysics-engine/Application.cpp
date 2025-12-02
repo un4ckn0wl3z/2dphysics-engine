@@ -9,13 +9,13 @@ bool Application::IsRunning() {
 
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
-    Particle* smallBall = new Particle(50, 100, 1.0);
-    smallBall->radius = 4;
-    m_particles.push_back(smallBall);
+    //Particle* smallBall = new Particle(50, 100, 1.0);
+    //smallBall->radius = 4;
+    //m_particles.push_back(smallBall);
 
-    Particle* bigBall = new Particle(50, 100, 3.0);
-    bigBall->radius = 12;
-    m_particles.push_back(bigBall);
+    //Particle* bigBall = new Particle(50, 100, 3.0);
+    //bigBall->radius = 12;
+    //m_particles.push_back(bigBall);
 
     m_liquid.x = 0;
     m_liquid.y = Graphics::Height() / 2;
@@ -54,6 +54,15 @@ void Application::Input() {
                 if (event.key.keysym.sym == SDLK_a)
                     m_pushForce.x = 0;
                 break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    Particle* particle = new Particle(x, y, 1.0);
+                    particle->radius = 5;
+                    m_particles.push_back(particle);
+                }
+                break;
         }
     }
 }
@@ -82,8 +91,8 @@ void Application::Update() {
 
     // apply some force to particle
     for (auto particle : m_particles) {
-        Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
-        particle->AddForce(wind);
+        //Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
+        //particle->AddForce(wind);
 
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
         particle->AddForce(weight);
