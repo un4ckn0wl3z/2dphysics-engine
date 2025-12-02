@@ -15,6 +15,12 @@ void Application::Setup() {
     //Particle* bigBall = new Particle(50, 100, 3.0);
     //bigBall->radius = 12;
     //m_particles.push_back(bigBall);
+
+    m_liquid.x = 0;
+    m_liquid.y = Graphics::Height() / 2;
+    m_liquid.w = Graphics::Width();
+    m_liquid.h = Graphics::Height() / 2;
+
 }
 
 
@@ -119,6 +125,15 @@ void Application::Update() {
 
 void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
+
+    // draw liquid
+    Graphics::DrawFillRect(
+        m_liquid.x + m_liquid.w / 2,
+        m_liquid.y + m_liquid.h / 2,
+        m_liquid.w,
+        m_liquid.h,
+        0xFF6E3713
+        );
 
     for (auto particle : m_particles) {
         Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);

@@ -9,6 +9,8 @@ class Application {
         bool m_running = false;
         std::vector<Particle*> m_particles;
         Vec2 m_pushForce = Vec2(0, 0);
+        
+        SDL_Rect m_liquid;
 
     public:
         Application() = default;
