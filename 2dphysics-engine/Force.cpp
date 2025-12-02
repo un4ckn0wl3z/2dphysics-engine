@@ -20,3 +20,14 @@ Vec2 Force::GenerateFrictionForce(const Particle& particle, float k)
 	frictionForce = frictionDirection * frictionMagnitude;
 	return frictionForce;
 }
+
+Vec2 Force::GenerateGravitationalForce(const Particle& a, const Particle& b, float G)
+{
+	Vec2 d = (b.position - a.position);
+	float distanceSquared = d.MagnitudeSquared();
+	Vec2 attractionDirection = d.UnitVector();
+	float attractionMagnitude = G * (a.mass * b.mass) / distanceSquared;
+	Vec2 attractionForce = attractionDirection * attractionMagnitude;
+	return attractionForce;
+
+}
