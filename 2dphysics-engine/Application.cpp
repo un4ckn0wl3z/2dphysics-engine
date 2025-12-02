@@ -101,7 +101,7 @@ void Application::Update() {
 
         // if we are inside liquid, apply drag force
         if (particle->position.y >= m_liquid.y) {
-            Vec2 drag = Force::GenerateDragForce(*particle, 0.04);
+            Vec2 drag = Force::GenerateDragForce(*particle, 0.03);
             particle->AddForce(drag);
 
         }
