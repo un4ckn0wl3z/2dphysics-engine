@@ -9,12 +9,12 @@ bool Application::IsRunning() {
 
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
-    //Particle* smallBall = new Particle(50, 100, 1.0);
-    //smallBall->radius = 4;
-    //m_particles.push_back(smallBall);
+    Particle* smallBall = new Particle(50, 100, 1.0);
+    smallBall->radius = 4;
+    m_particles.push_back(smallBall);
 
-    Particle* bigBall = new Particle(50, 100, 3.0);
-    bigBall->radius = 12;
+    Particle* bigBall = new Particle(50, 200, 5.0);
+    bigBall->radius = 20;
     m_particles.push_back(bigBall);
 
     //m_liquid.x = 0;
@@ -54,36 +54,36 @@ void Application::Input() {
                 if (event.key.keysym.sym == SDLK_a)
                     m_pushForce.x = 0;
                 break;
-            //case SDL_MOUSEBUTTONDOWN:
-            //    if (event.button.button == SDL_BUTTON_LEFT) {
-            //        int x, y;
-            //        SDL_GetMouseState(&x, &y);
-            //        Particle* particle = new Particle(x, y, 1.0);
-            //        particle->radius = 5;
-            //        m_particles.push_back(particle);
-            //    }
-            //    break;
-            case SDL_MOUSEMOTION:
-                m_mouseCursor.x = event.motion.x;
-                m_mouseCursor.y = event.motion.y;
-                break;
             case SDL_MOUSEBUTTONDOWN:
-                if (!m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
-                    m_leftMouseButtonDown = true;
+                if (event.button.button == SDL_BUTTON_LEFT) {
                     int x, y;
                     SDL_GetMouseState(&x, &y);
-                    m_mouseCursor.x = x;
-                    m_mouseCursor.y = y;
+                    Particle* particle = new Particle(x, y, 1.0);
+                    particle->radius = 5;
+                    m_particles.push_back(particle);
                 }
                 break;
-            case SDL_MOUSEBUTTONUP:
-                if (m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
-                    m_leftMouseButtonDown = false;
-                    Vec2 impulseDirection = (m_particles[0]->position - m_mouseCursor).UnitVector();
-                    float impulseMagnitude = (m_particles[0]->position - m_mouseCursor).Magnitude() * 5.0;
-                    m_particles[0]->velocity = impulseDirection * impulseMagnitude;
-                }
-                break;
+            //case SDL_MOUSEMOTION:
+            //    m_mouseCursor.x = event.motion.x;
+            //    m_mouseCursor.y = event.motion.y;
+            //    break;
+            //case SDL_MOUSEBUTTONDOWN:
+            //    if (!m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
+            //        m_leftMouseButtonDown = true;
+            //        int x, y;
+            //        SDL_GetMouseState(&x, &y);
+            //        m_mouseCursor.x = x;
+            //        m_mouseCursor.y = y;
+            //    }
+            //    break;
+            //case SDL_MOUSEBUTTONUP:
+            //    if (m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
+            //        m_leftMouseButtonDown = false;
+            //        Vec2 impulseDirection = (m_particles[0]->position - m_mouseCursor).UnitVector();
+            //        float impulseMagnitude = (m_particles[0]->position - m_mouseCursor).Magnitude() * 5.0;
+            //        m_particles[0]->velocity = impulseDirection * impulseMagnitude;
+            //    }
+            //    break;
         }
     }
 }
@@ -127,8 +127,9 @@ void Application::Update() {
 
         //}
 
-        Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0 * PIXELS_PER_METER);
-        particle->AddForce(friction);
+        //Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0 * PIXELS_PER_METER);
+        //particle->AddForce(friction);
+
 
     }
     
@@ -179,9 +180,9 @@ void Application::Render() {
     for (auto particle : m_particles) {
         Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);
     
-        if (m_leftMouseButtonDown) {
-            Graphics::DrawLine(particle->position.x, particle->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
-        }
+        //if (m_leftMouseButtonDown) {
+        //    Graphics::DrawLine(particle->position.x, particle->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
+        //}
     }
 
     Graphics::RenderFrame();
