@@ -94,17 +94,20 @@ void Application::Update() {
         //Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
         //particle->AddForce(wind);
 
-        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
-        particle->AddForce(weight);
+        //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
+        //particle->AddForce(weight);
 
         particle->AddForce(m_pushForce);
 
-        // if we are inside liquid, apply drag force
-        if (particle->position.y >= m_liquid.y) {
-            Vec2 drag = Force::GenerateDragForce(*particle, 0.03);
-            particle->AddForce(drag);
+        //// if we are inside liquid, apply drag force
+        //if (particle->position.y >= m_liquid.y) {
+        //    Vec2 drag = Force::GenerateDragForce(*particle, 0.03);
+        //    particle->AddForce(drag);
 
-        }
+        //}
+
+        Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0 * PIXELS_PER_METER);
+        particle->AddForce(friction);
 
     }
     
@@ -143,13 +146,13 @@ void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
 
     // draw liquid
-    Graphics::DrawFillRect(
-        m_liquid.x + m_liquid.w / 2,
-        m_liquid.y + m_liquid.h / 2,
-        m_liquid.w,
-        m_liquid.h,
-        0xFF6E3713
-        );
+    //Graphics::DrawFillRect(
+    //    m_liquid.x + m_liquid.w / 2,
+    //    m_liquid.y + m_liquid.h / 2,
+    //    m_liquid.w,
+    //    m_liquid.h,
+    //    0xFF6E3713
+    //    );
 
     for (auto particle : m_particles) {
         Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);
