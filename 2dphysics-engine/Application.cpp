@@ -9,13 +9,13 @@ bool Application::IsRunning() {
 
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
-    Particle* smallBall = new Particle(50, 100, 1.0);
-    smallBall->radius = 4;
-    m_particles.push_back(smallBall);
+    Particle* smallPlanet = new Particle(200, 200, 1.0);
+    smallPlanet->radius = 6;
+    m_particles.push_back(smallPlanet);
 
-    Particle* bigBall = new Particle(50, 200, 5.0);
-    bigBall->radius = 20;
-    m_particles.push_back(bigBall);
+    Particle* bigPlanet = new Particle(500, 500, 20.0);
+    bigPlanet->radius = 20;
+    m_particles.push_back(bigPlanet);
 
     //m_liquid.x = 0;
     //m_liquid.y = Graphics::Height() / 2;
@@ -130,8 +130,23 @@ void Application::Update() {
         //Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0 * PIXELS_PER_METER);
         //particle->AddForce(friction);
 
+        Vec2 friction = Force::GenerateFrictionForce(*particle, 5.0);
+        particle->AddForce(friction);
+
 
     }
+
+    // simulate gravitional attraction force
+    Vec2 attraction = Force::GenerateGravitationalForce(
+        *m_particles[0],
+        *m_particles[1],
+        1000.0,
+        5,
+        100
+    );
+
+    m_particles[0]->AddForce(attraction);
+    m_particles[1]->AddForce(-attraction);
     
 
     for (auto particle : m_particles) {
