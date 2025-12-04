@@ -10,22 +10,10 @@ bool Application::IsRunning() {
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
-
-
     Body* a = new Body(100, 100, 1.0);
-    Body* b = new Body(300, 100, 1.0);
-    Body* c = new Body(300, 300, 1.0);
-    Body* d = new Body(100, 300, 1.0);
 
     a->radius = 6;
-    b->radius = 6;
-    c->radius = 6;
-    d->radius = 6;
-
     m_bodies.push_back(a);
-    m_bodies.push_back(b);
-    m_bodies.push_back(c);
-    m_bodies.push_back(d);
 
 
 }
@@ -104,11 +92,10 @@ void Application::Update() {
 
     timePreviousFrame = SDL_GetTicks();
 
-    m_bodies[0]->AddForce(m_pushForce);
-
-
     // apply some force to body
     for (auto body : m_bodies) {
+
+        body->AddForce(m_pushForce);
 
         Vec2 drag = Force::GenerateDragForce(*body, 0.003);
         body->AddForce(drag);
@@ -116,32 +103,6 @@ void Application::Update() {
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
         body->AddForce(weight);
     }
-
-
-    // Attach bodies with springs
-    Vec2 ab = Force::GenerateSpringForce(*m_bodies[0], *m_bodies[1], m_restLength, m_spring_k); // a <-> b
-    m_bodies[0]->AddForce(ab);
-    m_bodies[1]->AddForce(-ab);
-
-    Vec2 bc = Force::GenerateSpringForce(*m_bodies[1], *m_bodies[2], m_restLength, m_spring_k); // b <-> c
-    m_bodies[1]->AddForce(bc);
-    m_bodies[2]->AddForce(-bc);
-
-    Vec2 cd = Force::GenerateSpringForce(*m_bodies[2], *m_bodies[3], m_restLength, m_spring_k); // c <-> d
-    m_bodies[2]->AddForce(cd);
-    m_bodies[3]->AddForce(-cd);
-
-    Vec2 da = Force::GenerateSpringForce(*m_bodies[3], *m_bodies[0], m_restLength, m_spring_k); // d <-> a
-    m_bodies[3]->AddForce(da);
-    m_bodies[0]->AddForce(-da);
-
-    Vec2 ac = Force::GenerateSpringForce(*m_bodies[0], *m_bodies[2], m_restLength, m_spring_k); // a <-> c
-    m_bodies[0]->AddForce(ac);
-    m_bodies[2]->AddForce(-ac);
-
-    Vec2 bd = Force::GenerateSpringForce(*m_bodies[1], *m_bodies[3], m_restLength, m_spring_k); // b <-> d
-    m_bodies[1]->AddForce(bd);
-    m_bodies[3]->AddForce(-bd);
 
 
     for (auto body : m_bodies) {
@@ -183,85 +144,10 @@ void Application::Render() {
         Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
     }
 
-
-    Graphics::DrawLine(
-        m_bodies[0]->position.x, 
-        m_bodies[0]->position.y,
-        m_bodies[1]->position.x,
-        m_bodies[1]->position.y,
-        0xFF0000FF
-        );
-
-    Graphics::DrawLine(
-        m_bodies[1]->position.x,
-        m_bodies[1]->position.y,
-        m_bodies[2]->position.x,
-        m_bodies[2]->position.y,
-        0xFF0000FF
-    );
-
-
-    Graphics::DrawLine(
-        m_bodies[2]->position.x,
-        m_bodies[2]->position.y,
-        m_bodies[3]->position.x,
-        m_bodies[3]->position.y,
-        0xFF0000FF
-    );
-
-
-    Graphics::DrawLine(
-        m_bodies[3]->position.x,
-        m_bodies[3]->position.y,
-        m_bodies[0]->position.x,
-        m_bodies[0]->position.y,
-        0xFF0000FF
-    );
-
-    Graphics::DrawLine(
-        m_bodies[0]->position.x,
-        m_bodies[0]->position.y,
-        m_bodies[2]->position.x,
-        m_bodies[2]->position.y,
-        0xFF0000FF
-    );
-
-
-    Graphics::DrawLine(
-        m_bodies[1]->position.x,
-        m_bodies[1]->position.y,
-        m_bodies[3]->position.x,
-        m_bodies[3]->position.y,
-        0xFF0000FF
-    );
-
     Graphics::DrawFillCircle(
         m_bodies[0]->position.x,
         m_bodies[0]->position.y,
         m_bodies[0]->radius,
-        0xFFFFFFFF
-    );
-
-
-    Graphics::DrawFillCircle(
-        m_bodies[1]->position.x,
-        m_bodies[1]->position.y,
-        m_bodies[1]->radius,
-        0xFFFFFFFF
-    );
-
-
-    Graphics::DrawFillCircle(
-        m_bodies[2]->position.x,
-        m_bodies[2]->position.y,
-        m_bodies[2]->radius,
-        0xFFFFFFFF
-    );
-
-    Graphics::DrawFillCircle(
-        m_bodies[3]->position.x,
-        m_bodies[3]->position.y,
-        m_bodies[3]->radius,
         0xFFFFFFFF
     );
 
