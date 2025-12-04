@@ -12,9 +12,11 @@ class Application {
         //SDL_Rect m_liquid;
         Vec2 m_mouseCursor = Vec2(0, 0);
         bool m_leftMouseButtonDown = false;
-        Vec2 m_anchor = Vec2(0, 0);
-        float m_spring_k = 40;
-        float m_restLength = 200;
+
+        Vec2 m_anchor;
+        float m_spring_k = 300;
+        float m_restLength = 15;
+        const int m_NUM_PARTICLES = 15;
 
 
     public:

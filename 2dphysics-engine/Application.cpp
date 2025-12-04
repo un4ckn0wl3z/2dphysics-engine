@@ -22,10 +22,19 @@ void Application::Setup() {
     //m_liquid.w = Graphics::Width();
     //m_liquid.h = Graphics::Height() / 2;
 
+
+    //Particle* bob = new Particle(Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
+    //bob->radius = 10;
+    //m_particles.push_back(bob);
+
     m_anchor = Vec2(Graphics::Width() / 2.0, 30.0);
-    Particle* bob = new Particle(Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
-    bob->radius = 10;
-    m_particles.push_back(bob);
+
+    for (int i = 0; i < m_NUM_PARTICLES; i++) {
+        Particle* bob = new Particle(m_anchor.x, m_anchor.y + (i * m_restLength), 2.0);
+        bob->radius = 6;
+        m_particles.push_back(bob);
+    }
+
 
 
 }
@@ -85,9 +94,9 @@ void Application::Input() {
             case SDL_MOUSEBUTTONUP:
                 if (m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
                     m_leftMouseButtonDown = false;
-                    Vec2 impulseDirection = (m_particles[0]->position - m_mouseCursor).UnitVector();
-                    float impulseMagnitude = (m_particles[0]->position - m_mouseCursor).Magnitude() * 5.0;
-                    m_particles[0]->velocity = impulseDirection * impulseMagnitude;
+                    Vec2 impulseDirection = (m_particles[m_NUM_PARTICLES-1]->position - m_mouseCursor).UnitVector();
+                    float impulseMagnitude = (m_particles[m_NUM_PARTICLES - 1]->position - m_mouseCursor).Magnitude() * 5.0;
+                    m_particles[m_NUM_PARTICLES - 1]->velocity = impulseDirection * impulseMagnitude;
                 }
                 break;
         }
@@ -139,7 +148,7 @@ void Application::Update() {
         //Vec2 friction = Force::GenerateFrictionForce(*particle, 5.0);
         //particle->AddForce(friction);
 
-        Vec2 drag = Force::GenerateDragForce(*particle, 0.001);
+        Vec2 drag = Force::GenerateDragForce(*particle, 0.002);
         particle->AddForce(drag);
 
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
@@ -147,8 +156,8 @@ void Application::Update() {
     }
 
     // apply spring force
-    Vec2 springForce = Force::GenerateSpringForce(*m_particles[0], m_anchor, m_restLength, m_spring_k);
-    m_particles[0]->AddForce(springForce);
+    //Vec2 springForce = Force::GenerateSpringForce(*m_particles[0], m_anchor, m_restLength, m_spring_k);
+    //m_particles[0]->AddForce(springForce);
     // simulate gravitional attraction force
     //Vec2 attraction = Force::GenerateGravitationalForce(
     //    *m_particles[0],
@@ -160,6 +169,18 @@ void Application::Update() {
 
     //m_particles[0]->AddForce(attraction);
     //m_particles[1]->AddForce(-attraction);
+
+    Vec2 springForce = Force::GenerateSpringForce(*m_particles[0], m_anchor, m_restLength, m_spring_k);
+    m_particles[0]->AddForce(springForce);
+
+    for (int i = 1; i < m_NUM_PARTICLES; i++)
+    {
+        int currentParticle = i;
+        int previousParticle = i - 1;
+        Vec2 springForce = Force::GenerateSpringForce(*m_particles[currentParticle], *m_particles[previousParticle], m_restLength, m_spring_k);
+        m_particles[currentParticle]->AddForce(springForce);
+        m_particles[previousParticle]->AddForce(-springForce);
+    }
     
 
     for (auto particle : m_particles) {
@@ -207,18 +228,25 @@ void Application::Render() {
 
     // draw anchor
     Graphics::DrawFillCircle(m_anchor.x, m_anchor.y, 5, 0xFF001155);
+    Graphics::DrawLine(m_anchor.x, m_anchor.y, m_particles[0]->position.x, m_particles[0]->position.y, 0xFF0000FF);
+
+
+    if (m_leftMouseButtonDown) {
+        Graphics::DrawLine(m_particles[m_NUM_PARTICLES - 1]->position.x, m_particles[m_NUM_PARTICLES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
+    }
+
+
+    for (int i = 0; i < m_NUM_PARTICLES -1; i++)
+    {
+        int currentParticle = i;
+        int nexParticle = i + 1;
+        Graphics::DrawLine(m_particles[currentParticle]->position.x, m_particles[currentParticle]->position.y, m_particles[nexParticle]->position.x, m_particles[nexParticle]->position.y, 0xFF0000FF);
+
+    }
 
 
     for (auto particle : m_particles) {
         Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);
-    
-        if (m_leftMouseButtonDown) {
-            Graphics::DrawLine(particle->position.x, particle->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
-        }
-
-        // draw the spring
-        Graphics::DrawLine(m_anchor.x, m_anchor.y, particle->position.x, particle->position.y, 0xFF0000FF);
-
 
     }
 
