@@ -1,7 +1,7 @@
 #pragma once
 #include "Vec2.h"
 
-struct Particle {
+struct Body {
 
 	int radius;
 
@@ -14,8 +14,8 @@ struct Particle {
 	float mass;
 	float invMass;
 
-	Particle(float x, float y, float mass);
-	~Particle();
+	Body(float x, float y, float mass);
+	~Body();
 
 	void AddForce(const Vec2& force);
 	void ClearForces();

@@ -9,13 +9,13 @@ bool Application::IsRunning() {
 
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
-    //Particle* smallPlanet = new Particle(200, 200, 1.0);
+    //Body* smallPlanet = new Body(200, 200, 1.0);
     //smallPlanet->radius = 6;
-    //m_particles.push_back(smallPlanet);
+    //m_bodies.push_back(smallPlanet);
 
-    //Particle* bigPlanet = new Particle(500, 500, 20.0);
+    //Body* bigPlanet = new Body(500, 500, 20.0);
     //bigPlanet->radius = 20;
-    //m_particles.push_back(bigPlanet);
+    //m_bodies.push_back(bigPlanet);
 
     //m_liquid.x = 0;
     //m_liquid.y = Graphics::Height() / 2;
@@ -23,33 +23,33 @@ void Application::Setup() {
     //m_liquid.h = Graphics::Height() / 2;
 
 
-    //Particle* bob = new Particle(Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
+    //Body* bob = new Body(Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
     //bob->radius = 10;
-    //m_particles.push_back(bob);
+    //m_bodies.push_back(bob);
 
     //m_anchor = Vec2(Graphics::Width() / 2.0, 30.0);
 
-    //for (int i = 0; i < m_NUM_PARTICLES; i++) {
-    //    Particle* bob = new Particle(m_anchor.x, m_anchor.y + (i * m_restLength), 2.0);
+    //for (int i = 0; i < m_NUM_BODIES; i++) {
+    //    Body* bob = new Body(m_anchor.x, m_anchor.y + (i * m_restLength), 2.0);
     //    bob->radius = 6;
-    //    m_particles.push_back(bob);
+    //    m_bodies.push_back(bob);
     //}
 
 
-    Particle* a = new Particle(100, 100, 1.0);
-    Particle* b = new Particle(300, 100, 1.0);
-    Particle* c = new Particle(300, 300, 1.0);
-    Particle* d = new Particle(100, 300, 1.0);
+    Body* a = new Body(100, 100, 1.0);
+    Body* b = new Body(300, 100, 1.0);
+    Body* c = new Body(300, 300, 1.0);
+    Body* d = new Body(100, 300, 1.0);
 
     a->radius = 6;
     b->radius = 6;
     c->radius = 6;
     d->radius = 6;
 
-    m_particles.push_back(a);
-    m_particles.push_back(b);
-    m_particles.push_back(c);
-    m_particles.push_back(d);
+    m_bodies.push_back(a);
+    m_bodies.push_back(b);
+    m_bodies.push_back(c);
+    m_bodies.push_back(d);
 
 
 }
@@ -88,9 +88,9 @@ void Application::Input() {
             //    if (event.button.button == SDL_BUTTON_LEFT) {
             //        int x, y;
             //        SDL_GetMouseState(&x, &y);
-            //        Particle* particle = new Particle(x, y, 1.0);
-            //        particle->radius = 5;
-            //        m_particles.push_back(particle);
+            //        Body* body = new Body(x, y, 1.0);
+            //        body->radius = 5;
+            //        m_bodies.push_back(body);
             //    }
             //    break;
             case SDL_MOUSEMOTION:
@@ -109,9 +109,9 @@ void Application::Input() {
             case SDL_MOUSEBUTTONUP:
                 if (m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
                     m_leftMouseButtonDown = false;
-                    Vec2 impulseDirection = (m_particles[m_NUM_PARTICLES-1]->position - m_mouseCursor).UnitVector();
-                    float impulseMagnitude = (m_particles[m_NUM_PARTICLES - 1]->position - m_mouseCursor).Magnitude() * 5.0;
-                    m_particles[m_NUM_PARTICLES - 1]->velocity = impulseDirection * impulseMagnitude;
+                    Vec2 impulseDirection = (m_bodies[m_NUM_BODIES-1]->position - m_mouseCursor).UnitVector();
+                    float impulseMagnitude = (m_bodies[m_NUM_BODIES - 1]->position - m_mouseCursor).Magnitude() * 5.0;
+                    m_bodies[m_NUM_BODIES - 1]->velocity = impulseDirection * impulseMagnitude;
                 }
                 break;
         }
@@ -138,117 +138,117 @@ void Application::Update() {
     timePreviousFrame = SDL_GetTicks();
 
     // update logic
-    //m_particle->acceleration = Vec2(2.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
+    //m_body->acceleration = Vec2(2.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
 
-    m_particles[0]->AddForce(m_pushForce);
+    m_bodies[0]->AddForce(m_pushForce);
 
 
-    // apply some force to particle
-    for (auto particle : m_particles) {
+    // apply some force to body
+    for (auto body : m_bodies) {
         //Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
-        //particle->AddForce(wind);
+        //body->AddForce(wind);
 
-        //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
-        //particle->AddForce(weight);
+        //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
+        //body->AddForce(weight);
 
-       //particle->AddForce(m_pushForce);
+       //body->AddForce(m_pushForce);
 
         //// if we are inside liquid, apply drag force
-        //if (particle->position.y >= m_liquid.y) {
-        //    Vec2 drag = Force::GenerateDragForce(*particle, 0.03);
-        //    particle->AddForce(drag);
+        //if (body->position.y >= m_liquid.y) {
+        //    Vec2 drag = Force::GenerateDragForce(*body, 0.03);
+        //    body->AddForce(drag);
 
         //}
 
-        //Vec2 friction = Force::GenerateFrictionForce(*particle, 10.0 * PIXELS_PER_METER);
-        //particle->AddForce(friction);
+        //Vec2 friction = Force::GenerateFrictionForce(*body, 10.0 * PIXELS_PER_METER);
+        //body->AddForce(friction);
 
-        //Vec2 friction = Force::GenerateFrictionForce(*particle, 5.0);
-        //particle->AddForce(friction);
+        //Vec2 friction = Force::GenerateFrictionForce(*body, 5.0);
+        //body->AddForce(friction);
 
-        Vec2 drag = Force::GenerateDragForce(*particle, 0.003);
-        particle->AddForce(drag);
+        Vec2 drag = Force::GenerateDragForce(*body, 0.003);
+        body->AddForce(drag);
 
-        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
-        particle->AddForce(weight);
+        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
+        body->AddForce(weight);
     }
 
     // apply spring force
-    //Vec2 springForce = Force::GenerateSpringForce(*m_particles[0], m_anchor, m_restLength, m_spring_k);
-    //m_particles[0]->AddForce(springForce);
+    //Vec2 springForce = Force::GenerateSpringForce(*m_bodies[0], m_anchor, m_restLength, m_spring_k);
+    //m_bodies[0]->AddForce(springForce);
     // simulate gravitional attraction force
     //Vec2 attraction = Force::GenerateGravitationalForce(
-    //    *m_particles[0],
-    //    *m_particles[1],
+    //    *m_bodies[0],
+    //    *m_bodies[1],
     //    1000.0,
     //    5,
     //    100
     //);
 
-    //m_particles[0]->AddForce(attraction);
-    //m_particles[1]->AddForce(-attraction);
+    //m_bodies[0]->AddForce(attraction);
+    //m_bodies[1]->AddForce(-attraction);
 
-    //Vec2 springForce = Force::GenerateSpringForce(*m_particles[0], m_anchor, m_restLength, m_spring_k);
-    //m_particles[0]->AddForce(springForce);
+    //Vec2 springForce = Force::GenerateSpringForce(*m_bodies[0], m_anchor, m_restLength, m_spring_k);
+    //m_bodies[0]->AddForce(springForce);
 
-    //for (int i = 1; i < m_NUM_PARTICLES; i++)
+    //for (int i = 1; i < m_NUM_BODIES; i++)
     //{
-    //    int currentParticle = i;
-    //    int previousParticle = i - 1;
-    //    Vec2 springForce = Force::GenerateSpringForce(*m_particles[currentParticle], *m_particles[previousParticle], m_restLength, m_spring_k);
-    //    m_particles[currentParticle]->AddForce(springForce);
-    //    m_particles[previousParticle]->AddForce(-springForce);
+    //    int currentBody = i;
+    //    int previousBody = i - 1;
+    //    Vec2 springForce = Force::GenerateSpringForce(*m_bodies[currentBody], *m_bodies[previousBody], m_restLength, m_spring_k);
+    //    m_bodies[currentBody]->AddForce(springForce);
+    //    m_bodies[previousBody]->AddForce(-springForce);
     //}
 
-    // Attach particles with springs
-    Vec2 ab = Force::GenerateSpringForce(*m_particles[0], *m_particles[1], m_restLength, m_spring_k); // a <-> b
-    m_particles[0]->AddForce(ab);
-    m_particles[1]->AddForce(-ab);
+    // Attach bodies with springs
+    Vec2 ab = Force::GenerateSpringForce(*m_bodies[0], *m_bodies[1], m_restLength, m_spring_k); // a <-> b
+    m_bodies[0]->AddForce(ab);
+    m_bodies[1]->AddForce(-ab);
 
-    Vec2 bc = Force::GenerateSpringForce(*m_particles[1], *m_particles[2], m_restLength, m_spring_k); // b <-> c
-    m_particles[1]->AddForce(bc);
-    m_particles[2]->AddForce(-bc);
+    Vec2 bc = Force::GenerateSpringForce(*m_bodies[1], *m_bodies[2], m_restLength, m_spring_k); // b <-> c
+    m_bodies[1]->AddForce(bc);
+    m_bodies[2]->AddForce(-bc);
 
-    Vec2 cd = Force::GenerateSpringForce(*m_particles[2], *m_particles[3], m_restLength, m_spring_k); // c <-> d
-    m_particles[2]->AddForce(cd);
-    m_particles[3]->AddForce(-cd);
+    Vec2 cd = Force::GenerateSpringForce(*m_bodies[2], *m_bodies[3], m_restLength, m_spring_k); // c <-> d
+    m_bodies[2]->AddForce(cd);
+    m_bodies[3]->AddForce(-cd);
 
-    Vec2 da = Force::GenerateSpringForce(*m_particles[3], *m_particles[0], m_restLength, m_spring_k); // d <-> a
-    m_particles[3]->AddForce(da);
-    m_particles[0]->AddForce(-da);
+    Vec2 da = Force::GenerateSpringForce(*m_bodies[3], *m_bodies[0], m_restLength, m_spring_k); // d <-> a
+    m_bodies[3]->AddForce(da);
+    m_bodies[0]->AddForce(-da);
 
-    Vec2 ac = Force::GenerateSpringForce(*m_particles[0], *m_particles[2], m_restLength, m_spring_k); // a <-> c
-    m_particles[0]->AddForce(ac);
-    m_particles[2]->AddForce(-ac);
+    Vec2 ac = Force::GenerateSpringForce(*m_bodies[0], *m_bodies[2], m_restLength, m_spring_k); // a <-> c
+    m_bodies[0]->AddForce(ac);
+    m_bodies[2]->AddForce(-ac);
 
-    Vec2 bd = Force::GenerateSpringForce(*m_particles[1], *m_particles[3], m_restLength, m_spring_k); // b <-> d
-    m_particles[1]->AddForce(bd);
-    m_particles[3]->AddForce(-bd);
+    Vec2 bd = Force::GenerateSpringForce(*m_bodies[1], *m_bodies[3], m_restLength, m_spring_k); // b <-> d
+    m_bodies[1]->AddForce(bd);
+    m_bodies[3]->AddForce(-bd);
 
 
-    for (auto particle : m_particles) {
+    for (auto body : m_bodies) {
         // apply acceleration and velocity
-        particle->Integrate(deltaTime);
+        body->Integrate(deltaTime);
     }
 
-    for (auto particle : m_particles) {
+    for (auto body : m_bodies) {
         // limit boundaries
-        if (particle->position.x - particle->radius <= 0) {
-            particle->position.x = particle->radius;
-            particle->velocity.x *= -0.9;
+        if (body->position.x - body->radius <= 0) {
+            body->position.x = body->radius;
+            body->velocity.x *= -0.9;
         }
-        else if (particle->position.x + particle->radius >= Graphics::Width()) {
-            particle->position.x = Graphics::Width() - particle->radius;
-            particle->velocity.x *= -0.9;
+        else if (body->position.x + body->radius >= Graphics::Width()) {
+            body->position.x = Graphics::Width() - body->radius;
+            body->velocity.x *= -0.9;
         }
 
-        if (particle->position.y - particle->radius <= 0) {
-            particle->position.y = particle->radius;
-            particle->velocity.y *= -0.9;
+        if (body->position.y - body->radius <= 0) {
+            body->position.y = body->radius;
+            body->velocity.y *= -0.9;
         }
-        else if (particle->position.y + particle->radius >= Graphics::Height()) {
-            particle->position.y = Graphics::Height() - particle->radius;
-            particle->velocity.y *= -0.9;
+        else if (body->position.y + body->radius >= Graphics::Height()) {
+            body->position.y = Graphics::Height() - body->radius;
+            body->velocity.y *= -0.9;
         }
 
     }
@@ -271,107 +271,107 @@ void Application::Render() {
 
     // draw anchor
     // Graphics::DrawFillCircle(m_anchor.x, m_anchor.y, 5, 0xFF001155);
-    // Graphics::DrawLine(m_anchor.x, m_anchor.y, m_particles[0]->position.x, m_particles[0]->position.y, 0xFF0000FF);
+    // Graphics::DrawLine(m_anchor.x, m_anchor.y, m_bodies[0]->position.x, m_bodies[0]->position.y, 0xFF0000FF);
 
 
     if (m_leftMouseButtonDown) {
-        Graphics::DrawLine(m_particles[m_NUM_PARTICLES - 1]->position.x, m_particles[m_NUM_PARTICLES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
+        Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
     }
 
 
-    //for (int i = 0; i < m_NUM_PARTICLES -1; i++)
+    //for (int i = 0; i < m_NUM_BODIES -1; i++)
     //{
-    //    int currentParticle = i;
-    //    int nexParticle = i + 1;
-    //    Graphics::DrawLine(m_particles[currentParticle]->position.x, m_particles[currentParticle]->position.y, m_particles[nexParticle]->position.x, m_particles[nexParticle]->position.y, 0xFF0000FF);
+    //    int currentBody = i;
+    //    int nexBody = i + 1;
+    //    Graphics::DrawLine(m_bodies[currentBody]->position.x, m_bodies[currentBody]->position.y, m_bodies[nexBody]->position.x, m_bodies[nexBody]->position.y, 0xFF0000FF);
 
     //}
 
 
-    //for (auto particle : m_particles) {
-    //    Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);
+    //for (auto body : m_bodies) {
+    //    Graphics::DrawFillCircle(body->position.x, body->position.y, body->radius, 0xFFFFFFFF);
 
     //}
 
 
     Graphics::DrawLine(
-        m_particles[0]->position.x, 
-        m_particles[0]->position.y,
-        m_particles[1]->position.x,
-        m_particles[1]->position.y,
+        m_bodies[0]->position.x, 
+        m_bodies[0]->position.y,
+        m_bodies[1]->position.x,
+        m_bodies[1]->position.y,
         0xFF0000FF
         );
 
     Graphics::DrawLine(
-        m_particles[1]->position.x,
-        m_particles[1]->position.y,
-        m_particles[2]->position.x,
-        m_particles[2]->position.y,
+        m_bodies[1]->position.x,
+        m_bodies[1]->position.y,
+        m_bodies[2]->position.x,
+        m_bodies[2]->position.y,
         0xFF0000FF
     );
 
 
     Graphics::DrawLine(
-        m_particles[2]->position.x,
-        m_particles[2]->position.y,
-        m_particles[3]->position.x,
-        m_particles[3]->position.y,
+        m_bodies[2]->position.x,
+        m_bodies[2]->position.y,
+        m_bodies[3]->position.x,
+        m_bodies[3]->position.y,
         0xFF0000FF
     );
 
 
     Graphics::DrawLine(
-        m_particles[3]->position.x,
-        m_particles[3]->position.y,
-        m_particles[0]->position.x,
-        m_particles[0]->position.y,
+        m_bodies[3]->position.x,
+        m_bodies[3]->position.y,
+        m_bodies[0]->position.x,
+        m_bodies[0]->position.y,
         0xFF0000FF
     );
 
     Graphics::DrawLine(
-        m_particles[0]->position.x,
-        m_particles[0]->position.y,
-        m_particles[2]->position.x,
-        m_particles[2]->position.y,
+        m_bodies[0]->position.x,
+        m_bodies[0]->position.y,
+        m_bodies[2]->position.x,
+        m_bodies[2]->position.y,
         0xFF0000FF
     );
 
 
     Graphics::DrawLine(
-        m_particles[1]->position.x,
-        m_particles[1]->position.y,
-        m_particles[3]->position.x,
-        m_particles[3]->position.y,
+        m_bodies[1]->position.x,
+        m_bodies[1]->position.y,
+        m_bodies[3]->position.x,
+        m_bodies[3]->position.y,
         0xFF0000FF
     );
 
     Graphics::DrawFillCircle(
-        m_particles[0]->position.x,
-        m_particles[0]->position.y,
-        m_particles[0]->radius,
+        m_bodies[0]->position.x,
+        m_bodies[0]->position.y,
+        m_bodies[0]->radius,
         0xFFFFFFFF
     );
 
 
     Graphics::DrawFillCircle(
-        m_particles[1]->position.x,
-        m_particles[1]->position.y,
-        m_particles[1]->radius,
+        m_bodies[1]->position.x,
+        m_bodies[1]->position.y,
+        m_bodies[1]->radius,
         0xFFFFFFFF
     );
 
 
     Graphics::DrawFillCircle(
-        m_particles[2]->position.x,
-        m_particles[2]->position.y,
-        m_particles[2]->radius,
+        m_bodies[2]->position.x,
+        m_bodies[2]->position.y,
+        m_bodies[2]->radius,
         0xFFFFFFFF
     );
 
     Graphics::DrawFillCircle(
-        m_particles[3]->position.x,
-        m_particles[3]->position.y,
-        m_particles[3]->radius,
+        m_bodies[3]->position.x,
+        m_bodies[3]->position.y,
+        m_bodies[3]->radius,
         0xFFFFFFFF
     );
 
@@ -381,8 +381,8 @@ void Application::Render() {
 
 void Application::Destroy() {
 
-    for (auto particle : m_particles) {
-        delete particle;
+    for (auto body : m_bodies) {
+        delete body;
     }
 
     Graphics::CloseWindow();
