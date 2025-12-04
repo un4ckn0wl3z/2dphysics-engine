@@ -9,31 +9,7 @@ bool Application::IsRunning() {
 
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
-    //Body* smallPlanet = new Body(200, 200, 1.0);
-    //smallPlanet->radius = 6;
-    //m_bodies.push_back(smallPlanet);
 
-    //Body* bigPlanet = new Body(500, 500, 20.0);
-    //bigPlanet->radius = 20;
-    //m_bodies.push_back(bigPlanet);
-
-    //m_liquid.x = 0;
-    //m_liquid.y = Graphics::Height() / 2;
-    //m_liquid.w = Graphics::Width();
-    //m_liquid.h = Graphics::Height() / 2;
-
-
-    //Body* bob = new Body(Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
-    //bob->radius = 10;
-    //m_bodies.push_back(bob);
-
-    //m_anchor = Vec2(Graphics::Width() / 2.0, 30.0);
-
-    //for (int i = 0; i < m_NUM_BODIES; i++) {
-    //    Body* bob = new Body(m_anchor.x, m_anchor.y + (i * m_restLength), 2.0);
-    //    bob->radius = 6;
-    //    m_bodies.push_back(bob);
-    //}
 
 
     Body* a = new Body(100, 100, 1.0);
@@ -84,15 +60,6 @@ void Application::Input() {
                 if (event.key.keysym.sym == SDLK_a)
                     m_pushForce.x = 0;
                 break;
-            //case SDL_MOUSEBUTTONDOWN:
-            //    if (event.button.button == SDL_BUTTON_LEFT) {
-            //        int x, y;
-            //        SDL_GetMouseState(&x, &y);
-            //        Body* body = new Body(x, y, 1.0);
-            //        body->radius = 5;
-            //        m_bodies.push_back(body);
-            //    }
-            //    break;
             case SDL_MOUSEMOTION:
                 m_mouseCursor.x = event.motion.x;
                 m_mouseCursor.y = event.motion.y;
@@ -137,34 +104,11 @@ void Application::Update() {
 
     timePreviousFrame = SDL_GetTicks();
 
-    // update logic
-    //m_body->acceleration = Vec2(2.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
-
     m_bodies[0]->AddForce(m_pushForce);
 
 
     // apply some force to body
     for (auto body : m_bodies) {
-        //Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
-        //body->AddForce(wind);
-
-        //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
-        //body->AddForce(weight);
-
-       //body->AddForce(m_pushForce);
-
-        //// if we are inside liquid, apply drag force
-        //if (body->position.y >= m_liquid.y) {
-        //    Vec2 drag = Force::GenerateDragForce(*body, 0.03);
-        //    body->AddForce(drag);
-
-        //}
-
-        //Vec2 friction = Force::GenerateFrictionForce(*body, 10.0 * PIXELS_PER_METER);
-        //body->AddForce(friction);
-
-        //Vec2 friction = Force::GenerateFrictionForce(*body, 5.0);
-        //body->AddForce(friction);
 
         Vec2 drag = Force::GenerateDragForce(*body, 0.003);
         body->AddForce(drag);
@@ -173,32 +117,6 @@ void Application::Update() {
         body->AddForce(weight);
     }
 
-    // apply spring force
-    //Vec2 springForce = Force::GenerateSpringForce(*m_bodies[0], m_anchor, m_restLength, m_spring_k);
-    //m_bodies[0]->AddForce(springForce);
-    // simulate gravitional attraction force
-    //Vec2 attraction = Force::GenerateGravitationalForce(
-    //    *m_bodies[0],
-    //    *m_bodies[1],
-    //    1000.0,
-    //    5,
-    //    100
-    //);
-
-    //m_bodies[0]->AddForce(attraction);
-    //m_bodies[1]->AddForce(-attraction);
-
-    //Vec2 springForce = Force::GenerateSpringForce(*m_bodies[0], m_anchor, m_restLength, m_spring_k);
-    //m_bodies[0]->AddForce(springForce);
-
-    //for (int i = 1; i < m_NUM_BODIES; i++)
-    //{
-    //    int currentBody = i;
-    //    int previousBody = i - 1;
-    //    Vec2 springForce = Force::GenerateSpringForce(*m_bodies[currentBody], *m_bodies[previousBody], m_restLength, m_spring_k);
-    //    m_bodies[currentBody]->AddForce(springForce);
-    //    m_bodies[previousBody]->AddForce(-springForce);
-    //}
 
     // Attach bodies with springs
     Vec2 ab = Force::GenerateSpringForce(*m_bodies[0], *m_bodies[1], m_restLength, m_spring_k); // a <-> b
@@ -260,38 +178,10 @@ void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
 
 
-    // draw liquid
-    //Graphics::DrawFillRect(
-    //    m_liquid.x + m_liquid.w / 2,
-    //    m_liquid.y + m_liquid.h / 2,
-    //    m_liquid.w,
-    //    m_liquid.h,
-    //    0xFF6E3713
-    //    );
-
-    // draw anchor
-    // Graphics::DrawFillCircle(m_anchor.x, m_anchor.y, 5, 0xFF001155);
-    // Graphics::DrawLine(m_anchor.x, m_anchor.y, m_bodies[0]->position.x, m_bodies[0]->position.y, 0xFF0000FF);
-
 
     if (m_leftMouseButtonDown) {
         Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
     }
-
-
-    //for (int i = 0; i < m_NUM_BODIES -1; i++)
-    //{
-    //    int currentBody = i;
-    //    int nexBody = i + 1;
-    //    Graphics::DrawLine(m_bodies[currentBody]->position.x, m_bodies[currentBody]->position.y, m_bodies[nexBody]->position.x, m_bodies[nexBody]->position.y, 0xFF0000FF);
-
-    //}
-
-
-    //for (auto body : m_bodies) {
-    //    Graphics::DrawFillCircle(body->position.x, body->position.y, body->radius, 0xFFFFFFFF);
-
-    //}
 
 
     Graphics::DrawLine(
