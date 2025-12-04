@@ -13,10 +13,10 @@ class Application {
         Vec2 m_mouseCursor = Vec2(0, 0);
         bool m_leftMouseButtonDown = false;
 
-        Vec2 m_anchor;
-        float m_spring_k = 300;
-        float m_restLength = 15;
-        const int m_NUM_PARTICLES = 15;
+        //Vec2 m_anchor;
+        float m_spring_k = 999;
+        float m_restLength = 200;
+        const int m_NUM_PARTICLES = 4;
 
 
     public:

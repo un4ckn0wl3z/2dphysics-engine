@@ -27,14 +27,29 @@ void Application::Setup() {
     //bob->radius = 10;
     //m_particles.push_back(bob);
 
-    m_anchor = Vec2(Graphics::Width() / 2.0, 30.0);
+    //m_anchor = Vec2(Graphics::Width() / 2.0, 30.0);
 
-    for (int i = 0; i < m_NUM_PARTICLES; i++) {
-        Particle* bob = new Particle(m_anchor.x, m_anchor.y + (i * m_restLength), 2.0);
-        bob->radius = 6;
-        m_particles.push_back(bob);
-    }
+    //for (int i = 0; i < m_NUM_PARTICLES; i++) {
+    //    Particle* bob = new Particle(m_anchor.x, m_anchor.y + (i * m_restLength), 2.0);
+    //    bob->radius = 6;
+    //    m_particles.push_back(bob);
+    //}
 
+
+    Particle* a = new Particle(100, 100, 1.0);
+    Particle* b = new Particle(300, 100, 1.0);
+    Particle* c = new Particle(300, 300, 1.0);
+    Particle* d = new Particle(100, 300, 1.0);
+
+    a->radius = 6;
+    b->radius = 6;
+    c->radius = 6;
+    d->radius = 6;
+
+    m_particles.push_back(a);
+    m_particles.push_back(b);
+    m_particles.push_back(c);
+    m_particles.push_back(d);
 
 
 }
@@ -125,6 +140,9 @@ void Application::Update() {
     // update logic
     //m_particle->acceleration = Vec2(2.0 * PIXELS_PER_METER, 9.8 * PIXELS_PER_METER);
 
+    m_particles[0]->AddForce(m_pushForce);
+
+
     // apply some force to particle
     for (auto particle : m_particles) {
         //Vec2 wind = Vec2(0.2 * PIXELS_PER_METER, 0.0 * PIXELS_PER_METER);
@@ -133,7 +151,7 @@ void Application::Update() {
         //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
         //particle->AddForce(weight);
 
-        particle->AddForce(m_pushForce);
+       //particle->AddForce(m_pushForce);
 
         //// if we are inside liquid, apply drag force
         //if (particle->position.y >= m_liquid.y) {
@@ -148,7 +166,7 @@ void Application::Update() {
         //Vec2 friction = Force::GenerateFrictionForce(*particle, 5.0);
         //particle->AddForce(friction);
 
-        Vec2 drag = Force::GenerateDragForce(*particle, 0.002);
+        Vec2 drag = Force::GenerateDragForce(*particle, 0.003);
         particle->AddForce(drag);
 
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, particle->mass * 9.8 * PIXELS_PER_METER);
@@ -170,18 +188,43 @@ void Application::Update() {
     //m_particles[0]->AddForce(attraction);
     //m_particles[1]->AddForce(-attraction);
 
-    Vec2 springForce = Force::GenerateSpringForce(*m_particles[0], m_anchor, m_restLength, m_spring_k);
-    m_particles[0]->AddForce(springForce);
+    //Vec2 springForce = Force::GenerateSpringForce(*m_particles[0], m_anchor, m_restLength, m_spring_k);
+    //m_particles[0]->AddForce(springForce);
 
-    for (int i = 1; i < m_NUM_PARTICLES; i++)
-    {
-        int currentParticle = i;
-        int previousParticle = i - 1;
-        Vec2 springForce = Force::GenerateSpringForce(*m_particles[currentParticle], *m_particles[previousParticle], m_restLength, m_spring_k);
-        m_particles[currentParticle]->AddForce(springForce);
-        m_particles[previousParticle]->AddForce(-springForce);
-    }
-    
+    //for (int i = 1; i < m_NUM_PARTICLES; i++)
+    //{
+    //    int currentParticle = i;
+    //    int previousParticle = i - 1;
+    //    Vec2 springForce = Force::GenerateSpringForce(*m_particles[currentParticle], *m_particles[previousParticle], m_restLength, m_spring_k);
+    //    m_particles[currentParticle]->AddForce(springForce);
+    //    m_particles[previousParticle]->AddForce(-springForce);
+    //}
+
+    // Attach particles with springs
+    Vec2 ab = Force::GenerateSpringForce(*m_particles[0], *m_particles[1], m_restLength, m_spring_k); // a <-> b
+    m_particles[0]->AddForce(ab);
+    m_particles[1]->AddForce(-ab);
+
+    Vec2 bc = Force::GenerateSpringForce(*m_particles[1], *m_particles[2], m_restLength, m_spring_k); // b <-> c
+    m_particles[1]->AddForce(bc);
+    m_particles[2]->AddForce(-bc);
+
+    Vec2 cd = Force::GenerateSpringForce(*m_particles[2], *m_particles[3], m_restLength, m_spring_k); // c <-> d
+    m_particles[2]->AddForce(cd);
+    m_particles[3]->AddForce(-cd);
+
+    Vec2 da = Force::GenerateSpringForce(*m_particles[3], *m_particles[0], m_restLength, m_spring_k); // d <-> a
+    m_particles[3]->AddForce(da);
+    m_particles[0]->AddForce(-da);
+
+    Vec2 ac = Force::GenerateSpringForce(*m_particles[0], *m_particles[2], m_restLength, m_spring_k); // a <-> c
+    m_particles[0]->AddForce(ac);
+    m_particles[2]->AddForce(-ac);
+
+    Vec2 bd = Force::GenerateSpringForce(*m_particles[1], *m_particles[3], m_restLength, m_spring_k); // b <-> d
+    m_particles[1]->AddForce(bd);
+    m_particles[3]->AddForce(-bd);
+
 
     for (auto particle : m_particles) {
         // apply acceleration and velocity
@@ -227,8 +270,8 @@ void Application::Render() {
     //    );
 
     // draw anchor
-    Graphics::DrawFillCircle(m_anchor.x, m_anchor.y, 5, 0xFF001155);
-    Graphics::DrawLine(m_anchor.x, m_anchor.y, m_particles[0]->position.x, m_particles[0]->position.y, 0xFF0000FF);
+    // Graphics::DrawFillCircle(m_anchor.x, m_anchor.y, 5, 0xFF001155);
+    // Graphics::DrawLine(m_anchor.x, m_anchor.y, m_particles[0]->position.x, m_particles[0]->position.y, 0xFF0000FF);
 
 
     if (m_leftMouseButtonDown) {
@@ -236,22 +279,101 @@ void Application::Render() {
     }
 
 
-    for (int i = 0; i < m_NUM_PARTICLES -1; i++)
-    {
-        int currentParticle = i;
-        int nexParticle = i + 1;
-        Graphics::DrawLine(m_particles[currentParticle]->position.x, m_particles[currentParticle]->position.y, m_particles[nexParticle]->position.x, m_particles[nexParticle]->position.y, 0xFF0000FF);
+    //for (int i = 0; i < m_NUM_PARTICLES -1; i++)
+    //{
+    //    int currentParticle = i;
+    //    int nexParticle = i + 1;
+    //    Graphics::DrawLine(m_particles[currentParticle]->position.x, m_particles[currentParticle]->position.y, m_particles[nexParticle]->position.x, m_particles[nexParticle]->position.y, 0xFF0000FF);
 
-    }
-
-
-    for (auto particle : m_particles) {
-        Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);
-
-    }
+    //}
 
 
+    //for (auto particle : m_particles) {
+    //    Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);
 
+    //}
+
+
+    Graphics::DrawLine(
+        m_particles[0]->position.x, 
+        m_particles[0]->position.y,
+        m_particles[1]->position.x,
+        m_particles[1]->position.y,
+        0xFF0000FF
+        );
+
+    Graphics::DrawLine(
+        m_particles[1]->position.x,
+        m_particles[1]->position.y,
+        m_particles[2]->position.x,
+        m_particles[2]->position.y,
+        0xFF0000FF
+    );
+
+
+    Graphics::DrawLine(
+        m_particles[2]->position.x,
+        m_particles[2]->position.y,
+        m_particles[3]->position.x,
+        m_particles[3]->position.y,
+        0xFF0000FF
+    );
+
+
+    Graphics::DrawLine(
+        m_particles[3]->position.x,
+        m_particles[3]->position.y,
+        m_particles[0]->position.x,
+        m_particles[0]->position.y,
+        0xFF0000FF
+    );
+
+    Graphics::DrawLine(
+        m_particles[0]->position.x,
+        m_particles[0]->position.y,
+        m_particles[2]->position.x,
+        m_particles[2]->position.y,
+        0xFF0000FF
+    );
+
+
+    Graphics::DrawLine(
+        m_particles[1]->position.x,
+        m_particles[1]->position.y,
+        m_particles[3]->position.x,
+        m_particles[3]->position.y,
+        0xFF0000FF
+    );
+
+    Graphics::DrawFillCircle(
+        m_particles[0]->position.x,
+        m_particles[0]->position.y,
+        m_particles[0]->radius,
+        0xFFFFFFFF
+    );
+
+
+    Graphics::DrawFillCircle(
+        m_particles[1]->position.x,
+        m_particles[1]->position.y,
+        m_particles[1]->radius,
+        0xFFFFFFFF
+    );
+
+
+    Graphics::DrawFillCircle(
+        m_particles[2]->position.x,
+        m_particles[2]->position.y,
+        m_particles[2]->radius,
+        0xFFFFFFFF
+    );
+
+    Graphics::DrawFillCircle(
+        m_particles[3]->position.x,
+        m_particles[3]->position.y,
+        m_particles[3]->radius,
+        0xFFFFFFFF
+    );
 
     Graphics::RenderFrame();
 }
