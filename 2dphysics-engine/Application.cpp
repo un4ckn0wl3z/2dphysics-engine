@@ -105,7 +105,7 @@ void Application::Update() {
 
     for (auto body : m_bodies) {
         // apply acceleration and velocity
-        body->Integrate(deltaTime);
+        body->IntegrateLinear(deltaTime);
     }
 
     for (auto body : m_bodies) {
