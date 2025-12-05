@@ -12,7 +12,10 @@ void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
     Body* box = new Body(BoxShape(200, 100), Graphics::Width() / 2, Graphics::Height() / 2, 1.0);
+    Body* ball = new Body(CircleShape(50), Graphics::Width() / 2, Graphics::Height() / 2, 1.0);
+
     m_bodies.push_back(box);
+    m_bodies.push_back(ball);
 
 }
 
@@ -93,16 +96,16 @@ void Application::Update() {
     // apply some force to body
     for (auto body : m_bodies) {
 
-        //body->AddForce(m_pushForce);
+        body->AddForce(m_pushForce);
 
-        //Vec2 drag = Force::GenerateDragForce(*body, 0.003);
-        //body->AddForce(drag);
+        Vec2 drag = Force::GenerateDragForce(*body, 0.003);
+        body->AddForce(drag);
 
         //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
         //body->AddForce(weight);
 
-        //float torque = 20;
-        //body->AddTorque(torque);
+        float torque = 200;
+        body->AddTorque(torque);
     }
 
 
