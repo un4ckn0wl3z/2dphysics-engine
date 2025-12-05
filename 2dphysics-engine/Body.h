@@ -4,8 +4,6 @@
 
 struct Body {
 
-	int radius;
-
 	Vec2 position;
 	Vec2 velocity;
 	Vec2 acceleration;

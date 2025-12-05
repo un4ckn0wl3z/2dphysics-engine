@@ -12,10 +12,7 @@ void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
     Body* a = new Body(CircleShape(50), 100, 100, 1.0);
-
-    a->radius = 6;
     m_bodies.push_back(a);
-
 
 }
 
@@ -113,22 +110,26 @@ void Application::Update() {
 
     for (auto body : m_bodies) {
         // limit boundaries
-        if (body->position.x - body->radius <= 0) {
-            body->position.x = body->radius;
-            body->velocity.x *= -0.9;
-        }
-        else if (body->position.x + body->radius >= Graphics::Width()) {
-            body->position.x = Graphics::Width() - body->radius;
-            body->velocity.x *= -0.9;
-        }
 
-        if (body->position.y - body->radius <= 0) {
-            body->position.y = body->radius;
-            body->velocity.y *= -0.9;
-        }
-        else if (body->position.y + body->radius >= Graphics::Height()) {
-            body->position.y = Graphics::Height() - body->radius;
-            body->velocity.y *= -0.9;
+        if (body->shape->GetType() == CIRCLE) {
+            CircleShape* circleShape = dynamic_cast<CircleShape*>(body->shape);
+            if (body->position.x - circleShape->radius <= 0) {
+                body->position.x = circleShape->radius;
+                body->velocity.x *= -0.9;
+            }
+            else if (body->position.x + circleShape->radius >= Graphics::Width()) {
+                body->position.x = Graphics::Width() - circleShape->radius;
+                body->velocity.x *= -0.9;
+            }
+
+            if (body->position.y - circleShape->radius <= 0) {
+                body->position.y = circleShape->radius;
+                body->velocity.y *= -0.9;
+            }
+            else if (body->position.y + circleShape->radius >= Graphics::Height()) {
+                body->position.y = Graphics::Height() - circleShape->radius;
+                body->velocity.y *= -0.9;
+            }
         }
 
     }
@@ -145,12 +146,22 @@ void Application::Render() {
         Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
     }
 
-    Graphics::DrawFillCircle(
-        m_bodies[0]->position.x,
-        m_bodies[0]->position.y,
-        m_bodies[0]->radius,
-        0xFFFFFFFF
-    );
+    for (auto body : m_bodies) {
+        if (body->shape->GetType() == CIRCLE) {
+            Graphics::DrawFillCircle(
+                body->position.x,
+                body->position.y,
+                dynamic_cast<CircleShape*>(body->shape)->radius,
+                0xFFFFFFFF
+            );
+        }
+        else {
+            // TODO:
+
+        }
+    }
+
+
 
     Graphics::RenderFrame();
 }
