@@ -28,13 +28,18 @@ struct CircleShape : public Shape {
 };
 
 struct PolygonShape : public Shape {
-	std::vector<Vec2> vertices;
+	std::vector<Vec2> localVertices;
+	std::vector<Vec2> worldVertices;
+
 	PolygonShape() = default;
 	PolygonShape(const std::vector<Vec2> vertices);
 	virtual ~PolygonShape();
 	ShapeType GetType() const override;
 	Shape* Clone() const override;
 	float GetMomentOfInertia() const override;
+
+	// translate polygon vertices from local space to world space
+	virtual void UpdateVertices(float angle, const Vec2& position);
 };
 
 struct BoxShape : public PolygonShape {
