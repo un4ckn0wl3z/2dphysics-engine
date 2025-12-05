@@ -13,6 +13,7 @@ struct Shape {
 
 	virtual ~Shape() = default;
 	virtual ShapeType GetType() const = 0;
+	virtual Shape* Clone() const = 0;
 
 };
 
@@ -21,6 +22,7 @@ struct CircleShape : public Shape {
 	CircleShape(const float radius);
 	virtual ~CircleShape();
 	ShapeType GetType() const override;
+	Shape* Clone() const override;
 };
 
 struct PolygonShape : public Shape {
@@ -29,6 +31,8 @@ struct PolygonShape : public Shape {
 	PolygonShape(const std::vector<Vec2> vertices);
 	virtual ~PolygonShape();
 	ShapeType GetType() const override;
+	Shape* Clone() const override;
+
 };
 
 struct BoxShape : public PolygonShape {
@@ -38,5 +42,7 @@ struct BoxShape : public PolygonShape {
 	BoxShape(float width = 0.0, float height = 0.0);
 	virtual ~BoxShape();
 	ShapeType GetType() const override;
+	Shape* Clone() const override;
+
 
 };

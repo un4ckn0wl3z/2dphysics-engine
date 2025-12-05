@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Constants.h"
 #include "Force.h"
+#include "Shape.h"
 
 bool Application::IsRunning() {
     return m_running;
@@ -10,7 +11,7 @@ bool Application::IsRunning() {
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
-    Body* a = new Body(100, 100, 1.0);
+    Body* a = new Body(CircleShape(50), 100, 100, 1.0);
 
     a->radius = 6;
     m_bodies.push_back(a);

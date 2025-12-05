@@ -1,5 +1,6 @@
 #pragma once
 #include "Vec2.h"
+#include "Shape.h"
 
 struct Body {
 
@@ -14,7 +15,9 @@ struct Body {
 	float mass;
 	float invMass;
 
-	Body(float x, float y, float mass);
+	Shape* shape = nullptr;
+
+	Body(const Shape& shape, float x, float y, float mass);
 	~Body();
 
 	void AddForce(const Vec2& force);
