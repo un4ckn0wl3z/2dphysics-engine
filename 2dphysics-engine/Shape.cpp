@@ -55,14 +55,23 @@ float PolygonShape::GetMomentOfInertia() const
 
 BoxShape::BoxShape(float width, float height)
 {
-	// TODO:
+	
 	this->width = width;
 	this->height = height;
+
+	// load 4 vertices
+	vertices.push_back(Vec2(-this->width / 2.0, -this->height / 2.0));
+	vertices.push_back(Vec2(+this->width / 2.0, -this->height / 2.0));
+	vertices.push_back(Vec2(+this->width / 2.0, +this->height / 2.0));
+	vertices.push_back(Vec2(-this->width / 2.0, +this->height / 2.0));
+
+
 }
 
 BoxShape::~BoxShape()
 {
-	// TODO:
+	std::cout << "BoxShape destructor called!" << std::endl;
+
 }
 
 ShapeType BoxShape::GetType() const
