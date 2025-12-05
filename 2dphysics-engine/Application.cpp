@@ -146,12 +146,15 @@ void Application::Render() {
         Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
     }
 
+    static float s_angle = 0.0;
+
     for (auto body : m_bodies) {
         if (body->shape->GetType() == CIRCLE) {
-            Graphics::DrawFillCircle(
+            Graphics::DrawCircle(
                 body->position.x,
                 body->position.y,
                 dynamic_cast<CircleShape*>(body->shape)->radius,
+                s_angle,
                 0xFFFFFFFF
             );
         }
@@ -161,7 +164,7 @@ void Application::Render() {
         }
     }
 
-
+    s_angle += 0.01;
 
     Graphics::RenderFrame();
 }
