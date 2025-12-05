@@ -100,12 +100,16 @@ void Application::Update() {
 
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
         body->AddForce(weight);
+
+        float torque = 20;
+        body->AddTorque(torque);
     }
 
 
     for (auto body : m_bodies) {
         // apply acceleration and velocity
         body->IntegrateLinear(deltaTime);
+        body->IntegrateAngular(deltaTime);
     }
 
     for (auto body : m_bodies) {
@@ -146,15 +150,13 @@ void Application::Render() {
         Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
     }
 
-    static float s_angle = 0.0;
-
     for (auto body : m_bodies) {
         if (body->shape->GetType() == CIRCLE) {
             Graphics::DrawCircle(
                 body->position.x,
                 body->position.y,
                 dynamic_cast<CircleShape*>(body->shape)->radius,
-                s_angle,
+                body->rotation,
                 0xFFFFFFFF
             );
         }
@@ -163,8 +165,6 @@ void Application::Render() {
 
         }
     }
-
-    s_angle += 0.01;
 
     Graphics::RenderFrame();
 }
