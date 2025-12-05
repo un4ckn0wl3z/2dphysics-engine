@@ -19,6 +19,7 @@ Body::Body(const Shape& shape, float x, float y, float mass)
 
 Body::~Body()
 {
+	delete shape;
 	std::cout << "Body destructor called!" << std::endl;
 }
 
