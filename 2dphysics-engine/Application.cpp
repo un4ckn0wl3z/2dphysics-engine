@@ -3,6 +3,7 @@
 #include "Force.h"
 #include "Shape.h"
 #include "CollisionDetection.h"
+#include "Contact.h"
 
 bool Application::IsRunning() {
     return m_running;
@@ -53,6 +54,8 @@ void Application::Input() {
             case SDL_MOUSEMOTION:
                 m_mouseCursor.x = event.motion.x;
                 m_mouseCursor.y = event.motion.y;
+                m_bodies[0]->position.x = m_mouseCursor.x;
+                m_bodies[0]->position.y = m_mouseCursor.y;
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (!m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
@@ -63,14 +66,14 @@ void Application::Input() {
                     m_mouseCursor.y = y;
                 }
                 break;
-            case SDL_MOUSEBUTTONUP:
-                if (m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
-                    m_leftMouseButtonDown = false;
-                    Vec2 impulseDirection = (m_bodies[m_NUM_BODIES-1]->position - m_mouseCursor).UnitVector();
-                    float impulseMagnitude = (m_bodies[m_NUM_BODIES - 1]->position - m_mouseCursor).Magnitude() * 5.0;
-                    m_bodies[m_NUM_BODIES - 1]->velocity = impulseDirection * impulseMagnitude;
-                }
-                break;
+            //case SDL_MOUSEBUTTONUP:
+            //    if (m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
+            //        m_leftMouseButtonDown = false;
+            //        Vec2 impulseDirection = (m_bodies[m_NUM_BODIES-1]->position - m_mouseCursor).UnitVector();
+            //        float impulseMagnitude = (m_bodies[m_NUM_BODIES - 1]->position - m_mouseCursor).Magnitude() * 5.0;
+            //        m_bodies[m_NUM_BODIES - 1]->velocity = impulseDirection * impulseMagnitude;
+            //    }
+            //    break;
         }
     }
 }
@@ -102,11 +105,11 @@ void Application::Update() {
         //Vec2 drag = Force::GenerateDragForce(*body, 0.003);
         //body->AddForce(drag);
 
-        Vec2 wind = Vec2(20.0 * PIXELS_PER_METER, 0.0);
-        body->AddForce(wind);
+        //Vec2 wind = Vec2(20.0 * PIXELS_PER_METER, 0.0);
+        //body->AddForce(wind);
 
-        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
-        body->AddForce(weight);
+        //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
+        //body->AddForce(weight);
 
         //float torque = 200;
         //body->AddTorque(torque);
@@ -129,8 +132,10 @@ void Application::Update() {
             Body* b = m_bodies[j];
             a->isColliding = false;
             b->isColliding = false;
+            Contact contact;
 
-            if (CollisionDetection::IsColliding(a, b)) {
+
+            if (CollisionDetection::IsColliding(a, b, contact)) {
                 // Collision happend
                 a->isColliding = true;
                 b->isColliding = true;
