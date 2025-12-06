@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "Force.h"
 #include "Shape.h"
+#include "CollisionDetection.h"
 
 bool Application::IsRunning() {
     return m_running;
@@ -11,11 +12,11 @@ bool Application::IsRunning() {
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
-    Body* box = new Body(BoxShape(200, 100), Graphics::Width() / 2, Graphics::Height() / 2, 1.0);
-    Body* ball = new Body(CircleShape(50), Graphics::Width() / 2, Graphics::Height() / 2, 1.0);
+    Body* bigBall = new Body(CircleShape(100), 100, 100, 1.0);
+    Body* smallBall = new Body(CircleShape(50), 500, 100, 1.0);
 
-    m_bodies.push_back(box);
-    m_bodies.push_back(ball);
+    m_bodies.push_back(bigBall);
+    m_bodies.push_back(smallBall);
 
 }
 
@@ -96,16 +97,19 @@ void Application::Update() {
     // apply some force to body
     for (auto body : m_bodies) {
 
-        body->AddForce(m_pushForce);
+        //body->AddForce(m_pushForce);
 
-        Vec2 drag = Force::GenerateDragForce(*body, 0.003);
-        body->AddForce(drag);
+        //Vec2 drag = Force::GenerateDragForce(*body, 0.003);
+        //body->AddForce(drag);
 
-        //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
-        //body->AddForce(weight);
+        Vec2 wind = Vec2(20.0 * PIXELS_PER_METER, 0.0);
+        body->AddForce(wind);
 
-        float torque = 200;
-        body->AddTorque(torque);
+        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
+        body->AddForce(weight);
+
+        //float torque = 200;
+        //body->AddTorque(torque);
     }
 
 
@@ -114,6 +118,26 @@ void Application::Update() {
         body->Update(deltaTime);
 
     }
+
+    // collision checlk
+    for (int  i = 0; i <= m_bodies.size() - 1; i++)
+    {
+        for (int j = i +1 ; j < m_bodies.size(); j++)
+        {
+            // check m_bodies[i] with m_bodies[j]
+            Body* a = m_bodies[i];
+            Body* b = m_bodies[j];
+            a->isColliding = false;
+            b->isColliding = false;
+
+            if (CollisionDetection::IsColliding(a, b)) {
+                // Collision happend
+                a->isColliding = true;
+                b->isColliding = true;
+            }
+        }
+    }
+
 
     for (auto body : m_bodies) {
         // limit boundaries
@@ -148,19 +172,22 @@ void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
 
 
-
     if (m_leftMouseButtonDown) {
         Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
     }
 
     for (auto body : m_bodies) {
+
+        Uint32 color = body->isColliding ? 0xFF0000FF : 0xFFFFFFFF;
+
+
         if (body->shape->GetType() == CIRCLE) {
             Graphics::DrawCircle(
                 body->position.x,
                 body->position.y,
                 dynamic_cast<CircleShape*>(body->shape)->radius,
                 body->rotation,
-                0xFFFFFFFF
+                color
             );
         }
         else if (body->shape->GetType() == BOX) {
@@ -168,7 +195,7 @@ void Application::Render() {
                 body->position.x,
                 body->position.y,
                 dynamic_cast<BoxShape*>(body->shape)->worldVertices,
-                0xFFFFFFFF
+                color
             );
         }
     }

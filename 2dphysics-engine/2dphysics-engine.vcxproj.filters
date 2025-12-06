@@ -48,6 +48,9 @@
     <ClCompile Include="Shape.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionDetection.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vec2.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Shape.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionDetection.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>

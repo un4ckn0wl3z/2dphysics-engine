@@ -4,6 +4,8 @@
 
 struct Body {
 
+	bool isColliding = false;
+
 	// linear
 	Vec2 position;
 	Vec2 velocity;
