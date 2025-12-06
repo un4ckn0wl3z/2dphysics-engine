@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CollisionDetection.cpp" />
+    <ClCompile Include="Contact.cpp" />
     <ClCompile Include="Force.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="CollisionDetection.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Contact.h" />
     <ClInclude Include="Force.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Body.h" />
