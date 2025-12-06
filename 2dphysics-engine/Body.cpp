@@ -82,3 +82,18 @@ void Body::ClearTorque()
 	this->sumTorque = 0.0;
 }
 
+void Body::Update(float dt)
+{
+	this->IntegrateLinear(dt);
+	this->IntegrateAngular(dt);
+	bool isPolygon =
+		this->shape->GetType() == POLYGON ||
+		this->shape->GetType() == BOX;
+
+	if (isPolygon) {
+		PolygonShape* polygon = dynamic_cast<PolygonShape*>(this->shape);
+		polygon->UpdateVertices(this->rotation, this->position);
+	}
+
+}
+

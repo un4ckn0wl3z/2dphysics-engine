@@ -110,18 +110,8 @@ void Application::Update() {
 
 
     for (auto body : m_bodies) {
-        // apply acceleration and velocity
-        body->IntegrateLinear(deltaTime);
-        body->IntegrateAngular(deltaTime);
-        bool isPolygon =
-            body->shape->GetType() == POLYGON ||
-            body->shape->GetType() == BOX;
-
-        if (isPolygon) {
-            PolygonShape* polygon = dynamic_cast<PolygonShape*>(body->shape);
-            polygon->UpdateVertices(body->rotation, body->position);
-        }
-
+        // apply acceleration and velocit
+        body->Update(deltaTime);
 
     }
 

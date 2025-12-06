@@ -34,5 +34,7 @@ struct Body {
 	void AddTorque(float torque);
 	void ClearTorque();
 
+	void Update(float dt);
+
 
 };
