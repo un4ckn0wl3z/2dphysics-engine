@@ -79,6 +79,8 @@ void Application::Input() {
 }
 
 void Application::Update() {
+    Graphics::ClearScreen(0xFF056263);
+
 
     // frame-rate lock
     static int timePreviousFrame;
@@ -136,9 +138,34 @@ void Application::Update() {
 
 
             if (CollisionDetection::IsColliding(a, b, contact)) {
-                // Collision happend
+                // collision happend
+                // draw contact info
+
+                Graphics::DrawFillCircle(
+                    contact.start.x,
+                    contact.start.y,
+                    3,
+                    0xFFFF00FF
+                );
+
+                Graphics::DrawFillCircle(
+                    contact.end.x,
+                    contact.end.y,
+                    3,
+                    0xFFFF00FF
+                );
+                
+                Graphics::DrawLine(
+                    contact.start.x,
+                    contact.start.y,
+                    contact.start.x + contact.normal.x * 15,
+                    contact.start.y + contact.normal.y * 15,
+                    0xFFFF00FF
+                );
+
                 a->isColliding = true;
                 b->isColliding = true;
+
             }
         }
     }
@@ -174,7 +201,6 @@ void Application::Update() {
 
 
 void Application::Render() {
-    Graphics::ClearScreen(0xFF056263);
 
 
     if (m_leftMouseButtonDown) {

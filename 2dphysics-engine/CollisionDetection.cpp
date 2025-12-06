@@ -34,7 +34,7 @@ bool CollisionDetection::IsCollidingCircleCicle(Body* pa, Body* pb, Contact& con
 	contact.normal.Normalize();
 
 	contact.start = pb->position - contact.normal * b->radius;
-	contact.end = pa->position + contact.normal * b->radius;
+	contact.end = pa->position + contact.normal * a->radius;
 	contact.depth = (contact.end - contact.start).Magnitude();
 
 	return true;
