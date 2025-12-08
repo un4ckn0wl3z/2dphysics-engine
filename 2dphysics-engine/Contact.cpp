@@ -22,7 +22,7 @@ void Contact::ResolveCollision()
 
 	const Vec2 impulseDirection = this->normal;
 	const float impulseMagnitude = -(1 + e) * vrelDotNormal / (a->invMass + b->invMass);
-	Vec2 j =  impulseDirection * impulseMagnitude;
-	a->ApplyImpulse(j);
-	b->ApplyImpulse(-j);
+	Vec2 jn =  impulseDirection * impulseMagnitude;
+	a->ApplyImpulse(jn);
+	b->ApplyImpulse(-jn);
 }
