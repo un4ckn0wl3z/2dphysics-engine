@@ -93,6 +93,12 @@ void Body::ClearTorque()
 	this->sumTorque = 0.0;
 }
 
+void Body::ApplyImpulse(const Vec2& j)
+{
+	if (this->IsStatic()) return;
+	this->velocity += j * this->invMass;
+}
+
 void Body::Update(float dt)
 {
 	this->IntegrateLinear(dt);
