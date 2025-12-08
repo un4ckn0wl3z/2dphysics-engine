@@ -13,11 +13,11 @@ bool Application::IsRunning() {
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
-    Body* bigBall = new Body(CircleShape(100), 100, 100, 1.0);
+    Body* bigBall = new Body(CircleShape(100), 600, 600, 0.0);
     Body* smallBall = new Body(CircleShape(50), 500, 100, 1.0);
 
-    m_bodies.push_back(bigBall);
     m_bodies.push_back(smallBall);
+    m_bodies.push_back(bigBall);
 
 }
 
