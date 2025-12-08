@@ -22,6 +22,9 @@ struct Body {
 	float I;
 	float invI;
 
+	// COR
+	float restitution;
+
 
 	Shape* shape = nullptr;
 
