@@ -13,10 +13,11 @@ bool Application::IsRunning() {
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
-    Body* bigBall = new Body(CircleShape(100), 600, 600, 5.0);
-    Body* smallBall = new Body(CircleShape(50), 500, 100, 1.0);
-
-    m_bodies.push_back(smallBall);
+    Body* bigBall = 
+        new Body(
+            CircleShape(100), 
+            Graphics::Width() / 2.0, 
+            Graphics::Height() / 2.0, 0.0);
     m_bodies.push_back(bigBall);
 
 }
@@ -51,29 +52,14 @@ void Application::Input() {
                 if (event.key.keysym.sym == SDLK_a)
                     m_pushForce.x = 0;
                 break;
-            case SDL_MOUSEMOTION:
-                m_mouseCursor.x = event.motion.x;
-                m_mouseCursor.y = event.motion.y;
-                m_bodies[0]->position.x = m_mouseCursor.x;
-                m_bodies[0]->position.y = m_mouseCursor.y;
-                break;
             case SDL_MOUSEBUTTONDOWN:
-                if (!m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
-                    m_leftMouseButtonDown = true;
+                if (event.button.button == SDL_BUTTON_LEFT) {
                     int x, y;
                     SDL_GetMouseState(&x, &y);
-                    m_mouseCursor.x = x;
-                    m_mouseCursor.y = y;
+                    Body* smallBall = new Body(CircleShape(20), x, y, 1.0);
+                    m_bodies.push_back(smallBall);
                 }
                 break;
-            //case SDL_MOUSEBUTTONUP:
-            //    if (m_leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
-            //        m_leftMouseButtonDown = false;
-            //        Vec2 impulseDirection = (m_bodies[m_NUM_BODIES-1]->position - m_mouseCursor).UnitVector();
-            //        float impulseMagnitude = (m_bodies[m_NUM_BODIES - 1]->position - m_mouseCursor).Magnitude() * 5.0;
-            //        m_bodies[m_NUM_BODIES - 1]->velocity = impulseDirection * impulseMagnitude;
-            //    }
-            //    break;
         }
     }
 }
@@ -205,11 +191,6 @@ void Application::Update() {
 
 
 void Application::Render() {
-
-
-    if (m_leftMouseButtonDown) {
-        Graphics::DrawLine(m_bodies[m_NUM_BODIES - 1]->position.x, m_bodies[m_NUM_BODIES - 1]->position.y, m_mouseCursor.x, m_mouseCursor.y, 0xFF0000FF);
-    }
 
     for (auto body : m_bodies) {
 
