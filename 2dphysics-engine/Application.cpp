@@ -13,12 +13,13 @@ bool Application::IsRunning() {
 void Application::Setup() {
     m_running = Graphics::OpenWindow();
 
-    Body* bigBall = 
-        new Body(
-            CircleShape(100), 
-            Graphics::Width() / 2.0, 
-            Graphics::Height() / 2.0, 0.0);
-    m_bodies.push_back(bigBall);
+    Body* boxA = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 1.0);
+    Body* boxB = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 1.0);
+    boxA->angularVelocity = 0.4;
+    boxB->angularVelocity = 0.1;
+    m_bodies.push_back(boxA);
+    m_bodies.push_back(boxB);
+
 
 }
 
@@ -52,14 +53,12 @@ void Application::Input() {
                 if (event.key.keysym.sym == SDLK_a)
                     m_pushForce.x = 0;
                 break;
-            case SDL_MOUSEBUTTONDOWN:
-                if (event.button.button == SDL_BUTTON_LEFT) {
-                    int x, y;
-                    SDL_GetMouseState(&x, &y);
-                    Body* smallBall = new Body(CircleShape(20), x, y, 1.0);
-                    smallBall->restitution = 0.9;
-                    m_bodies.push_back(smallBall);
-                }
+            case SDL_MOUSEMOTION:
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                m_bodies[0]->position.x = x;
+                m_bodies[0]->position.y = y;
+
                 break;
         }
     }
@@ -89,16 +88,16 @@ void Application::Update() {
     // apply some force to body
     for (auto body : m_bodies) {
 
-        body->AddForce(m_pushForce);
+        //body->AddForce(m_pushForce);
 
-        Vec2 drag = Force::GenerateDragForce(*body, 0.003);
-        body->AddForce(drag);
+        //Vec2 drag = Force::GenerateDragForce(*body, 0.003);
+        //body->AddForce(drag);
 
         //Vec2 wind = Vec2(20.0 * PIXELS_PER_METER, 0.0);
         //body->AddForce(wind);
 
-        Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
-        body->AddForce(weight);
+        //Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
+        //body->AddForce(weight);
 
         //float torque = 200;
         //body->AddTorque(torque);
@@ -151,7 +150,7 @@ void Application::Update() {
                 );
 
                 // contact.ResolvePenetration();
-                contact.ResolveCollision();
+                // contact.ResolveCollision();
 
 
                 a->isColliding = true;

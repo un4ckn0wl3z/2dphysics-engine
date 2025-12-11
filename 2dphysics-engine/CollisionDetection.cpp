@@ -6,12 +6,18 @@ bool CollisionDetection::IsColliding(Body* a, Body* b, Contact& contact)
 	bool aIsCircle = a->shape->GetType() == CIRCLE;
 	bool bIsCircle = b->shape->GetType() == CIRCLE;
 
+	bool aIsPolygon = a->shape->GetType() == POLYGON || a->shape->GetType() == BOX;
+	bool bIsPolygon = b->shape->GetType() == POLYGON || b->shape->GetType() == BOX;;
+
 	if (aIsCircle && bIsCircle)
 	{
 		return IsCollidingCircleCicle(a, b, contact);
 	}
 
-
+	if (aIsPolygon && bIsPolygon)
+	{
+		return IsCollidingPolygonPolygon(a, b, contact);
+	}
 }
 
 bool CollisionDetection::IsCollidingCircleCicle(Body* pa, Body* pb, Contact& contact)
@@ -41,12 +47,12 @@ bool CollisionDetection::IsCollidingCircleCicle(Body* pa, Body* pb, Contact& con
 
 }
 
-bool CollisionDetection::IsCollidingPolygonPolygon(Body* a, Body* b)
+bool CollisionDetection::IsCollidingPolygonPolygon(Body* a, Body* b, Contact& contact)
 {
 	return false;
 }
 
-bool CollisionDetection::IsCollidingPolygonCircle(Body* a, Body* b)
+bool CollisionDetection::IsCollidingPolygonCircle(Body* a, Body* b, Contact& contact)
 {
 	return false;
 }
