@@ -55,7 +55,7 @@ float FindMinSeparation(const PolygonShape& a, const PolygonShape& b) {
 		float minSep = std::numeric_limits<float>::max();
 
 		for (int j = 0; j < b.worldVertices.size(); j++) {
-			Vec2 vb = a.worldVertices[j];
+			Vec2 vb = b.worldVertices[j];
 			minSep = std::min(minSep, (vb - va).Dot(normal));
 		}
 		separation = std::max(separation, minSep);
