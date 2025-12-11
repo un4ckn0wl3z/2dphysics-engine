@@ -47,9 +47,17 @@ bool CollisionDetection::IsCollidingCircleCicle(Body* pa, Body* pb, Contact& con
 
 }
 
+float FindMinSeparation(const PolygonShape& a, const PolygonShape& b) {
+
+}
+
 bool CollisionDetection::IsCollidingPolygonPolygon(Body* a, Body* b, Contact& contact)
 {
-	return false;
+	const PolygonShape* aPolygonShape = dynamic_cast<PolygonShape*>(a->shape);
+	const PolygonShape* bPolygonShape = dynamic_cast<PolygonShape*>(b->shape);
+
+
+
 }
 
 bool CollisionDetection::IsCollidingPolygonCircle(Body* a, Body* b, Contact& contact)
