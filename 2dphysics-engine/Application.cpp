@@ -57,6 +57,7 @@ void Application::Input() {
                     int x, y;
                     SDL_GetMouseState(&x, &y);
                     Body* smallBall = new Body(CircleShape(20), x, y, 1.0);
+                    smallBall->restitution = 0.9;
                     m_bodies.push_back(smallBall);
                 }
                 break;
