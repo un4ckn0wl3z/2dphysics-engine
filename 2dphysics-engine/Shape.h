@@ -37,6 +37,7 @@ struct PolygonShape : public Shape {
 	ShapeType GetType() const override;
 	Shape* Clone() const override;
 	Vec2 EdgeAt(int index) const;
+	float FindMinSeparation(const PolygonShape* other) const;
 	float GetMomentOfInertia() const override;
 
 	// translate polygon vertices from local space to world space
