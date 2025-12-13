@@ -53,15 +53,23 @@ bool CollisionDetection::IsCollidingPolygonPolygon(Body* a, Body* b, Contact& co
 {
 	const PolygonShape* aPolygonShape = dynamic_cast<PolygonShape*>(a->shape);
 	const PolygonShape* bPolygonShape = dynamic_cast<PolygonShape*>(b->shape);
-  
-	if (aPolygonShape->FindMinSeparation(bPolygonShape) >= 0) {
+	Vec2 aAxis, bAxis;
+	Vec2 aPoint, bPoint;
+
+	float abSeparation = aPolygonShape->FindMinSeparation(bPolygonShape, aAxis, aPoint);
+
+	if (abSeparation  >= 0) {
 		return false;
 	}
 
+	float baSeparation = bPolygonShape->FindMinSeparation(aPolygonShape, bAxis, bPoint);
 
-	if (bPolygonShape->FindMinSeparation(aPolygonShape) >= 0) {
+	if (baSeparation >= 0) {
 		return false;
 	}
+
+	// populate the contact information
+
 
 	return true;
 }
