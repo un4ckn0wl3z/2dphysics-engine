@@ -127,27 +127,27 @@ void Application::Update() {
                 // collision happend
                 // draw contact info
 
-                //Graphics::DrawFillCircle(
-                //    contact.start.x,
-                //    contact.start.y,
-                //    3,
-                //    0xFFFF00FF
-                //);
+                Graphics::DrawFillCircle(
+                    contact.start.x,
+                    contact.start.y,
+                    3,
+                    0xFFFF00FF
+                );
 
-                //Graphics::DrawFillCircle(
-                //    contact.end.x,
-                //    contact.end.y,
-                //    3,
-                //    0xFFFF00FF
-                //);
-                //
-                //Graphics::DrawLine(
-                //    contact.start.x,
-                //    contact.start.y,
-                //    contact.start.x + contact.normal.x * 15,
-                //    contact.start.y + contact.normal.y * 15,
-                //    0xFFFF00FF
-                //);
+                Graphics::DrawFillCircle(
+                    contact.end.x,
+                    contact.end.y,
+                    3,
+                    0xFFFF00FF
+                );
+                
+                Graphics::DrawLine(
+                    contact.start.x,
+                    contact.start.y,
+                    contact.start.x + contact.normal.x * 15,
+                    contact.start.y + contact.normal.y * 15,
+                    0xFFFF00FF
+                );
 
                 // contact.ResolvePenetration();
                 // contact.ResolveCollision();
