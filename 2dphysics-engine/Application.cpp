@@ -119,8 +119,8 @@ void Application::Update() {
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
         body->AddForce(weight);
 
-        float torque = 200;
-        body->AddTorque(torque);
+        //float torque = 200;
+        //body->AddTorque(torque);
     }
 
 
