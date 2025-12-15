@@ -169,8 +169,7 @@ void Application::Update() {
                     0xFFFF00FF
                 );
 
-                // contact.ResolvePenetration();
-                // contact.ResolveCollision();
+                contact.ResolveCollision();
 
 
                 a->isColliding = true;
