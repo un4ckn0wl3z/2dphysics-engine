@@ -108,10 +108,10 @@ void Application::Update() {
     // apply some force to body
     for (auto body : m_bodies) {
 
-        //body->AddForce(m_pushForce);
+        body->AddForce(m_pushForce);
 
-        //Vec2 drag = Force::GenerateDragForce(*body, 0.003);
-        //body->AddForce(drag);
+        Vec2 drag = Force::GenerateDragForce(*body, 0.003);
+        body->AddForce(drag);
 
         //Vec2 wind = Vec2(20.0 * PIXELS_PER_METER, 0.0);
         //body->AddForce(wind);
@@ -119,8 +119,8 @@ void Application::Update() {
         Vec2 weight = Vec2(0.0 * PIXELS_PER_METER, body->mass * 9.8 * PIXELS_PER_METER);
         body->AddForce(weight);
 
-        //float torque = 200;
-        //body->AddTorque(torque);
+        float torque = 200;
+        body->AddTorque(torque);
     }
 
 

@@ -27,8 +27,14 @@ void Contact::ResolveCollision()
 	float vrelDotNormal = vrel.Dot(this->normal);
 
 	const Vec2 impulseDirection = this->normal;
-	const float impulseMagnitude = -(1 + e) * vrelDotNormal / (a->invMass + b->invMass);
+	const float impulseMagnitude = -(1 + e) * vrelDotNormal / 
+		((a->invMass + b->invMass) + ra.Cross(normal) * ra.Cross(normal)
+		* a->invI +
+		rb.Cross(normal) * rb.Cross(normal) * b->invI);
+
 	Vec2 jn =  impulseDirection * impulseMagnitude;
-	a->ApplyImpulse(jn);
-	b->ApplyImpulse(-jn);
+
+
+	a->ApplyImpulse(jn, ra);
+	b->ApplyImpulse(-jn, rb);
 }

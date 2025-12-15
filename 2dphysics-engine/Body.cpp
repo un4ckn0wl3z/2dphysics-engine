@@ -99,6 +99,13 @@ void Body::ApplyImpulse(const Vec2& j)
 	this->velocity += j * this->invMass;
 }
 
+void Body::ApplyImpulse(const Vec2& j, const Vec2& r)
+{
+	if (this->IsStatic()) return;
+	this->velocity += j * this->invMass;
+	this->angularVelocity = r.Cross(j) * invI;
+}
+
 void Body::Update(float dt)
 {
 	this->IntegrateLinear(dt);
